@@ -13,9 +13,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<ManagerHome />} />
+        <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/menu" element={<MenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path="/menu-board" element={<MenuBoard />} />
       </Routes>
