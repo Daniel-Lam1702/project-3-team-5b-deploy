@@ -11,7 +11,7 @@ function Login() {
   }
 
   const onClickCashierHandler = () => {
-    navigate('/menu'); 
+    navigate('/cashier'); 
   }
 
   const onClickManagerHandler = () => {
