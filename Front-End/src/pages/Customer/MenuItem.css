@@ -3,6 +3,17 @@
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.menu-item:hover {
+  background-color: #e0e0e0;
+}
+
+.menu-item.selected {
+  background-color: #ffe6cc;
+  border-left: 4px solid #ffffff;
 }
 
 .menu-item-image {
@@ -18,21 +29,22 @@
 
 .menu-item-name {
   font-size: 1.2rem;
-  color: #333;
+  color: #ffffff;
   margin: 0;
 }
 
 .menu-item-description {
   font-size: 0.9rem;
-  color: #555;
+  color: #ffffff;
   margin: 5px 0 0;
 }
+
 .menu-item-button {
   display: flex;
   align-items: center;
   padding: 10px;
   margin: 10px 0;
-  background-color: #f8f8f8; 
+  background-color: #ffffff; 
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -44,14 +56,6 @@
   background-color: #e0e0e0;
 }
 
-.menu-item-image {
-  width: 50px; 
-  height: 50px; 
-  border-radius: 50%; 
-  margin-right: 10px;
-}
-
 .menu-item-details {
   flex-grow: 1;
 }
-  

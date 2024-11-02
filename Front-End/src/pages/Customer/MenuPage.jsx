@@ -65,6 +65,7 @@ function MenuPage({ setShowSidebar }) {
                 description={item.description} 
                 image={item.image} 
                 onClick={() => handleMenuItemClick(item)} 
+                isSelected={selectedMenuItem && selectedMenuItem.name === item.name}
               />
             ))}
           </div>

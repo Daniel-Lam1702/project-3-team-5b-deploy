@@ -7,8 +7,14 @@
 .menu-sidebar {
   width: 250px; 
   padding: 20px;
-  background-color: #fff; 
+  background-color: #6B091F;
   border-right: 1px solid #ccc; 
+}
+
+.menu-sidebar h2 {
+  color: #ffffff;
+  padding: 10px;
+  margin: 0;
 }
 
 .menu-main-content {
@@ -20,7 +26,30 @@
 .menu-items-scroll {
   max-height: 500px; 
   overflow-y: auto; 
+  padding: 10px;
 }
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  background-color: #000000;
+}
+
+.menu-item:hover {
+  background-color: #f0f0f0;
+}
+
+.menu-item.selected {
+  background-color: #0dda06;
+  color: #fff;
+}
+
 
 .entrees-list {
   margin-top: 20px;
