@@ -42,16 +42,18 @@ function CashierHome() {
       </div>
       <div className='flex justify-center items-center '>
         <ul className='grid grid-cols-1 gap-10'>
-          <li>
-            <LandingPageButton label='Change Language' Icon={GTranslateIcon} style={style} onClick={() => {}} />
-          </li>
-          <li>
-            <LandingPageButton label={"High-contrast mode"} Icon={ContrastIcon} style={style} onClick={toggleContrast} />
-          </li>
-          <li>
-            <LandingPageButton label={"Enlarge Text"} Icon={TextIncreaseIcon} style={style} onClick={() => {}} />
-          </li>
-        </ul>
+            <li>
+              <LandingPageButton label='Change User' style={style} onClick={() => {}} />
+            </li>
+            <li>
+              <button
+                className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
+                style={{ backgroundColor: style.buttonBackground }}
+                >
+                <h1 style={{ color: style.textColor }}>Clock In/Out</h1>
+              </button>
+            </li>
+          </ul>
       </div>
     </div>
   );
