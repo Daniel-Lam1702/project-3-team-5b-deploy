@@ -4,11 +4,18 @@
   padding: 10px;
   border-bottom: 1px solid #ddd;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .menu-item:hover {
   background-color: #e0e0e0;
+}
+
+
+.menu-item:hover .menu-item-name,
+.menu-item:hover .menu-item-description {
+  transition: color 0.4s;
+  color: #000000;
 }
 
 .menu-item.selected {
@@ -54,6 +61,7 @@
 
 .menu-item-button:hover {
   background-color: #e0e0e0;
+  color: #000000;
 }
 
 .menu-item-details {

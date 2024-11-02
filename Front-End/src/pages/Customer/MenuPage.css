@@ -41,9 +41,7 @@
   background-color: #000000;
 }
 
-.menu-item:hover {
-  background-color: #f0f0f0;
-}
+
 
 .menu-item.selected {
   background-color: #0dda06;
