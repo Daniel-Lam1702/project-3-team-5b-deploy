@@ -11,7 +11,9 @@ const Cart = ({ cartItems, onContinue }) => {
           {cartItems.length > 0 ? (
             cartItems.map((item, index) => (
               <li key={index}>
-                <strong>Entree:</strong> {item.entree || 'None selected'}
+                <strong>Menu Item:</strong> {item.menuItem}
+                <br />
+                <strong>Entrees:</strong> {item.entrees.length > 0 ? item.entrees.join(', ') : 'None selected'}
                 <br />
                 <strong>Sides:</strong> {item.sides.length > 0 ? item.sides.join(', ') : 'No sides selected'}
               </li>

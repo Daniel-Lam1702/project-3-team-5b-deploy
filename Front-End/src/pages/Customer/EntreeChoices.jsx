@@ -1,28 +1,36 @@
-import React, { useState } from 'react';
-import './EntreeChoices.css'; // Add your CSS styles here
-import Cart from './Cart'; // Import the Cart component
+import React from 'react';
+import './EntreeChoices.css'; // Ensure you have your styles defined
 
-const EntreeChoices = ({ entrees, selectedEntree, onSelectEntree, onContinue }) => {
-  const [showCart, setShowCart] = useState(false); // State to toggle Cart visibility
-
+const EntreeChoices = ({ entrees, maxEntrees, selectedEntrees = [], onSelectEntrees, onContinue }) => {
   return (
     <div className="entree-choices">
-      <h2>Select Your Entree</h2>
+      <h2>Select Your Entree (Max: {maxEntrees})</h2>
       <div className="entrees-list">
-        {entrees.map((entree, index) => (
-          <div
-            key={index}
-            className={`entree-item ${selectedEntree === entree ? 'selected' : ''}`}
-            onClick={() => onSelectEntree(entree)} // Select the entree
-          >
-            {entree}
-          </div>
-        ))}
+        {entrees.map((entree, index) => {
+          const isSelected = selectedEntrees.includes(entree);
+          return (
+            <div
+              key={index}
+              className={`entree-item ${isSelected ? 'selected' : ''}`}
+              onClick={() => {
+                if (isSelected) {
+                  // Deselect if already selected
+                  onSelectEntrees(selectedEntrees.filter(e => e !== entree));
+                } else if (selectedEntrees.length < maxEntrees) {
+                  // Select if not already selected and max not reached
+                  onSelectEntrees([...selectedEntrees, entree]);
+                }
+              }} 
+            >
+              {entree}
+            </div>
+          );
+        })}
       </div>
       <button 
-        className={`continue-button ${selectedEntree ? 'active' : ''}`} 
-        onClick={selectedEntree ? onContinue : null} // Call onContinue when clicked
-        disabled={!selectedEntree}
+        className={`continue-button ${selectedEntrees.length > 0 ? 'active' : ''}`} 
+        onClick={onContinue} 
+        disabled={selectedEntrees.length === 0}
       >
         Continue to Cart
       </button>

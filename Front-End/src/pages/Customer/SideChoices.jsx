@@ -35,9 +35,9 @@ const SideChoices = ({ sides, maxSides, onContinue }) => {
         ))}
       </div>
       <button 
-        className={`continue-button ${selectedSides.length > 0 ? 'active' : ''}`} 
-        onClick={handleContinue} // Call handleContinue to pass selected sides
-        disabled={selectedSides.length === 0}
+        className={`continue-button ${selectedSides.length > 0 ? 'active' : 'disabled'}`} 
+        onClick={handleContinue} 
+        disabled={selectedSides.length === 0} // Disable if no sides selected
       >
         Continue
       </button>

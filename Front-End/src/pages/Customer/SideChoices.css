@@ -38,16 +38,19 @@ h2 {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: gray;
+  background-color: #4caf50; /* Default color for active button */
   color: white;
   transition: background-color 0.3s;
 }
 
 .continue-button.active {
-  background-color: #4caf50;
+  background-color: #45a049; /* Slightly darker green when active */
 }
 
+/* Style when the button is disabled */
 .continue-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
+  background-color: #ccc; /* Grey background when disabled */
+  color: #666; /* Darker text when disabled */
+  cursor: not-allowed; /* Change cursor to indicate it's not clickable */
+  opacity: 1; /* Ensure opacity is 1 to maintain visibility */
 }
