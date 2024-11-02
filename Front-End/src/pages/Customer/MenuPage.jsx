@@ -14,11 +14,11 @@ function MenuPage({ setShowSidebar }) {
   const [view, setView] = useState('sides'); // New state to manage the current view
 
   const menuItems = [
-    { name: 'Bowl', description: 'Choose 1 entree and 1 side', image: '/images/bowl.jpg', maxSides: 1 },
-    { name: 'Plate', description: 'Choose 2 entrees and 1 side', image: '/images/plate.jpg', maxSides: 1 },
-    { name: 'Bigger Plate', description: 'Choose 3 entrees and 1 side', image: '/images/bigger-plate.jpg', maxSides: 1 },
-    { name: 'A La Carte', description: 'Order entrees or sides individually', image: '/images/a-la-carte.jpg', maxSides: 3 },
-    { name: 'Panda Bundle', description: 'Family-style bundle for group dining', image: '/images/panda-bundle.jpg', maxSides: 3 },
+    { name: 'Bowl', description: 'Choose 1 entree and 1 side', image: '/MenuItemImages/MenuItem/Bowl.avif', maxSides: 1 },
+    { name: 'Plate', description: 'Choose 2 entrees and 1 side', image: '/MenuItemImages/MenuItem/Plate.avif', maxSides: 1 },
+    { name: 'Bigger Plate', description: 'Choose 3 entrees and 1 side', image: '/MenuItemImages/MenuItem/BiggerPlate.avif', maxSides: 1 },
+    { name: 'A La Carte', description: 'Order entrees or sides individually', image: '/MenuItemImages/MenuItem/ALaCarte.avif', maxSides: 3 },
+    { name: 'Panda Bundle', description: 'Family-style bundle for group dining', image: '/MenuItemImages/MenuItem/PandaBundle.avif', maxSides: 3 },
   ];
 
   const entrees = [
@@ -65,6 +65,7 @@ function MenuPage({ setShowSidebar }) {
                 description={item.description} 
                 image={item.image} 
                 onClick={() => handleMenuItemClick(item)} 
+                isSelected={selectedMenuItem && selectedMenuItem.name === item.name}
               />
             ))}
           </div>
