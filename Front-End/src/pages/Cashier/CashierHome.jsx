@@ -29,7 +29,7 @@ function CashierHome() {
   };
 
   return (
-    <div className="grid grid-cols-2 w-full h-full gap-4">
+    <div className="grid grid-cols-2 w-full h-[90vh] gap-4">
       <div className='flex justify-center items-center'>
         <button
           className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}

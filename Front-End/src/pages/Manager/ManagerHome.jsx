@@ -29,7 +29,7 @@ function ManagerHome() {
   // };
 
   return (
-    <div className="grid grid-cols-2 w-full h-full gap-4">
+    <div className="grid grid-cols-2 w-full h-[90vh] gap-4">
       <div className='flex justify-center items-center'>
         <LandingPageButton label='MANAGE STUFF' Icon={HomeIcon} style={style} onClick={() => {}}/>
       </div>
