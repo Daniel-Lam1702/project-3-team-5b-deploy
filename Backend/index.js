@@ -23,6 +23,26 @@ app.get('/employees', async (req, res) => {
     }
 });
 
+app.get('/api/menu-items', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM menu_item');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/item-components', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM item_component');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
