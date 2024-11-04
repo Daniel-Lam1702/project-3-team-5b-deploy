@@ -1,0 +1,33 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up git
+        run: |
+          git config user.name "Daniel-lam1702"
+          git config user.email "daniellam1702@tamu.edu"
+
+      - name: Add upstream
+        run: git remote add upstream https://github.com/CSCE331-Fall2024/project-3-team-5b.git
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      - name: Checkout main branch
+        run: git checkout main # Replace 'main' if different
+
+      - name: Merge upstream changes
+        run: git merge upstream/main # Replace 'main' if different
+
+      - name: Push changes
+        run: git push origin main # Replace 'main' if different
