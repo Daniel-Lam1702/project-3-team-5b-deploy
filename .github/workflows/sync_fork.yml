@@ -27,7 +27,13 @@ jobs:
         run: git checkout main
 
       - name: Merge upstream changes
-        run: git merge upstream/main --allow-unrelated-histories
+        run: |
+          git merge upstream/main --allow-unrelated-histories || true
+          git checkout --theirs . # Keep upstream changes in all files
+          git add . # Stage all changes
+
+      - name: Commit merge
+        run: git commit -m "Auto-resolved merge conflicts by keeping upstream changes" || true
 
       - name: Push changes
-        run: git push origin main
+        run: git push origin main --force
