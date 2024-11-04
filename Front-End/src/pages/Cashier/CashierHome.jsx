@@ -25,7 +25,7 @@ function CashierHome() {
   };
 
   const handleStartOrder = () => {
-    navigate('/menu'); 
+    navigate('/cashier-order-page'); 
   };
 
   return (

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import MenuItem from './MenuItem';
-import SideChoices from './SideChoices';
-import EntreeChoices from './EntreeChoices'; 
-import Cart from './Cart';
-import './MenuPage.css';
-import Navbar from './Navbar';
+import MenuItem from '../Customer/MenuItem';
+import SideChoices from '../Customer/SideChoices';
+import EntreeChoices from '../Customer/EntreeChoices'; 
+import Cart from '../Customer/Cart';
+import '../Customer/MenuPage.css';
+import CashierNavbar from './CashierNavbar';
 
-function MenuPage({ setShowSidebar }) {
+function CashierMenuPage({ setShowSidebar }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [sides] = useState(['Chow Mein', 'Fried Rice', 'White Rice', 'Super Greens']);
   const [selectedEntrees, setSelectedEntrees] = useState([]); // Updated to handle multiple entrees
@@ -61,7 +61,7 @@ function MenuPage({ setShowSidebar }) {
 
   return (
     <div className="navbar-container">
-      <Navbar /> 
+      <CashierNavbar /> 
       <div className="menu-page">
         {setShowSidebar && (
           <div className="menu-sidebar">
@@ -115,4 +115,4 @@ function MenuPage({ setShowSidebar }) {
   );
 }
 
-export default MenuPage;
+export default CashierMenuPage;
