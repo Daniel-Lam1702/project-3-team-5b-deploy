@@ -4,6 +4,7 @@ import SideChoices from './SideChoices';
 import EntreeChoices from './EntreeChoices'; 
 import Cart from './Cart';
 import './MenuPage.css';
+import Navbar from './Navbar';
 
 function MenuPage({ setShowSidebar }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
@@ -59,53 +60,56 @@ function MenuPage({ setShowSidebar }) {
   };
 
   return (
-    <div className="menu-page">
-      {setShowSidebar && (
-        <div className="menu-sidebar">
-          <h2>Menu Items</h2>
-          <div className="menu-items-scroll">
-            {menuItems.map((item, index) => (
-              <MenuItem 
-                key={index} 
-                name={item.name} 
-                description={item.description} 
-                image={item.image} 
-                onClick={() => handleMenuItemClick(item)} 
-                isSelected={selectedMenuItem && selectedMenuItem.name === item.name}
-              />
-            ))}
+    <div className="navbar-container">
+      <Navbar /> 
+      <div className="menu-page">
+        {setShowSidebar && (
+          <div className="menu-sidebar">
+            <h2>Menu Items</h2>
+            <div className="menu-items-scroll">
+              {menuItems.map((item, index) => (
+                <MenuItem 
+                  key={index} 
+                  name={item.name} 
+                  description={item.description} 
+                  image={item.image} 
+                  onClick={() => handleMenuItemClick(item)} 
+                  isSelected={selectedMenuItem && selectedMenuItem.name === item.name}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-      <div className="menu-main-content">
-        {selectedMenuItem ? (
-          <div>
-            {view === 'sides' && (
-              <SideChoices 
-                sides={sides} 
-                maxSides={selectedMenuItem.maxSides}
-                onContinue={handleContinueToEntrees} 
-              />
-            )}
-            {view === 'entrees' && (
-              <EntreeChoices 
-                entrees={entrees} 
-                maxEntrees={selectedMenuItem.maxEntrees}
-                selectedEntrees={selectedEntrees} // Pass selected entrees array
-                onSelectEntrees={handleSelectEntrees} // Correct function name
-                onContinue={handleContinueToCart} 
-              />
-            )}
-            {view === 'cart' && (
-              <Cart 
-                cartItems={cartItems} 
-                onContinue={() => console.log('Proceeding to checkout')} 
-              />
-            )}
-          </div>
-        ) : (
-          <h1>Select a Menu Item</h1>
         )}
+        <div className="menu-main-content">
+          {selectedMenuItem ? (
+            <div>
+              {view === 'sides' && (
+                <SideChoices 
+                  sides={sides} 
+                  maxSides={selectedMenuItem.maxSides}
+                  onContinue={handleContinueToEntrees} 
+                />
+              )}
+              {view === 'entrees' && (
+                <EntreeChoices 
+                  entrees={entrees} 
+                  maxEntrees={selectedMenuItem.maxEntrees}
+                  selectedEntrees={selectedEntrees} // Pass selected entrees array
+                  onSelectEntrees={handleSelectEntrees} // Correct function name
+                  onContinue={handleContinueToCart} 
+                />
+              )}
+              {view === 'cart' && (
+                <Cart 
+                  cartItems={cartItems} 
+                  onContinue={() => console.log('Proceeding to checkout')} 
+                />
+              )}
+            </div>
+          ) : (
+            <h1>Select a Menu Item</h1>
+          )}
+        </div>
       </div>
     </div>
   );
