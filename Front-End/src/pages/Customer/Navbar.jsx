@@ -6,6 +6,9 @@ const Navbar = () => {
     return (
       <nav className="navbar">
         <ul>
+        <li className="left">
+              <Link to="/customer">Back</Link>
+            </li>
             <li className="left">
               <Link to="/menu-board">Menu Board</Link>
             </li>
