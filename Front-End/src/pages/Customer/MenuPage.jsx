@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 import MenuItem from './MenuItem';
 import SideChoices from './SideChoices';
 import EntreeChoices from './EntreeChoices'; 
 import Cart from './Cart';
 import './MenuPage.css';
 import Navbar from './Navbar';
+import { useFetchData } from '../../api/useFetchData';
 
 function MenuPage({ setShowSidebar }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
@@ -14,13 +16,15 @@ function MenuPage({ setShowSidebar }) {
   const [cartItems, setCartItems] = useState([]);
   const [view, setView] = useState('sides');
 
-  const menuItems = [
-    { name: 'Bowl', description: 'Choose 1 entree and 1 side', image: '/MenuItemImages/MenuItem/Bowl.avif', maxEntrees: 1, maxSides: 1 },
-    { name: 'Plate', description: 'Choose 2 entrees and 1 side', image: '/MenuItemImages/MenuItem/Plate.avif', maxEntrees: 2, maxSides: 1 },
-    { name: 'Bigger Plate', description: 'Choose 3 entrees and 1 side', image: '/MenuItemImages/MenuItem/BiggerPlate.avif', maxEntrees: 3, maxSides: 1 },
-    { name: 'A La Carte', description: 'Order entrees or sides individually', image: '/MenuItemImages/MenuItem/ALaCarte.avif', maxEntrees: 3, maxSides: 3 },
-    { name: 'Panda Bundle', description: 'Family-style bundle for group dining', image: '/MenuItemImages/MenuItem/PandaBundle.avif', maxEntrees: 3, maxSides: 3 },
-  ];
+  const { data: menuItems, loading: menuItemsLoading, error: menuItemsError } = useFetchData('menu-items');
+  const { data: itemComponents, loading: itemComponentsLoading, error: itemComponentsError } = useFetchData('item-components');
+
+  const displayOnlyMenuItems = useMemo(()=>{
+    if (menuItemsLoading){
+      return []
+    }
+    return menuItems.filter((menuItem) => menuItem.image !== null)
+  },[menuItems, menuItemsLoading])
 
   const entrees = [
     'Orange Chicken', 'Teriyaki Chicken', 'Bourbon Chicken', 
@@ -30,6 +34,7 @@ function MenuPage({ setShowSidebar }) {
   ];
 
   const handleMenuItemClick = (item) => {
+    console.log(item);
     setSelectedMenuItem(item);
     setSelectedEntrees([]); // Reset selected entrees when menu item is clicked
     setSelectedSides([]);
@@ -59,6 +64,12 @@ function MenuPage({ setShowSidebar }) {
     setSelectedEntrees(selected); // Update selected entrees
   };
 
+  if(menuItemsLoading){
+    return <div className='loading-container'>
+      <CircularProgress style={{color: "white", width: '300px', height: '300px'}}/>
+    </div>;
+  }
+
   return (
     <div className="navbar-container">
       <Navbar /> 
@@ -67,7 +78,7 @@ function MenuPage({ setShowSidebar }) {
           <div className="menu-sidebar">
             <h2>Menu Items</h2>
             <div className="menu-items-scroll">
-              {menuItems.map((item, index) => (
+              {displayOnlyMenuItems.map((item, index) => (
                 <MenuItem 
                   key={index} 
                   name={item.name} 
@@ -86,14 +97,14 @@ function MenuPage({ setShowSidebar }) {
               {view === 'sides' && (
                 <SideChoices 
                   sides={sides} 
-                  maxSides={selectedMenuItem.maxSides}
+                  maxSides={selectedMenuItem.maxsides}
                   onContinue={handleContinueToEntrees} 
                 />
               )}
               {view === 'entrees' && (
                 <EntreeChoices 
                   entrees={entrees} 
-                  maxEntrees={selectedMenuItem.maxEntrees}
+                  maxEntrees={selectedMenuItem.maxentrees}
                   selectedEntrees={selectedEntrees} // Pass selected entrees array
                   onSelectEntrees={handleSelectEntrees} // Correct function name
                   onContinue={handleContinueToCart} 
