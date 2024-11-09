@@ -99,8 +99,8 @@ Cart.propTypes = {
       drink: PropTypes.arrayOf(PropTypes.string),
       appetizer: PropTypes.arrayOf(PropTypes.string)
     })
-  ).isRequired,
-  onContinue: PropTypes.func.isRequired,
+  ),
+  onContinue: PropTypes.func,
 };
 
 export default Cart;
