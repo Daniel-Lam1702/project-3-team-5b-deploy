@@ -26,7 +26,7 @@ function ManagerHome() {
 
   var logout = function() {
     document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://project-3-team-5b.onrender.com";
-}
+  }
 
   // const handleStartOrder = () => {
   //   navigate('/menu'); 
@@ -38,7 +38,7 @@ function ManagerHome() {
         <button className="back-button" onClick={() => {navigate('/')}}>
           &#8592; Home
         </button>
-        <LandingPageButton label='Logout' Icon={ExitIcon} style={style} onClick={() => {}}/>
+        <LandingPageButton label='Logout' Icon={HomeIcon} style={style} onClick={() => {}}/>
         <LandingPageButton label='Inventory' Icon={HomeIcon} style={style} onClick={() => {}}/>
         <LandingPageButton label='Sales Reports' Icon={HomeIcon} style={style} onClick={() => {}}/>
         <LandingPageButton label='Admin' Icon={HomeIcon} style={style} onClick={() => {}}/>
