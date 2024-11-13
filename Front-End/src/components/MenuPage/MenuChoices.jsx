@@ -106,7 +106,8 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
                     aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
                     type="button"
                 >
-                    {itemComponent.name}
+                    <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
+                    <h3>{itemComponent.name}</h3>
                 </button>
                 ))}
             </div>
