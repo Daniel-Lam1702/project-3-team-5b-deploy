@@ -6,7 +6,21 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware setup
-app.use(cors({ origin: 'https://project-3-team-5b.onrender.com' }));  // Enable CORS
+const allowedOrigins = [
+    'https://project-3-team-5b.onrender.com',
+    'http://localhost:5173'
+  ];
+  
+app.use(cors({
+    origin: (origin, callback) => {
+    // Check if the request origin is in the allowed origins array
+    if (allowedOrigins.includes(origin) || !origin) {
+    callback(null, true); // Allow the request
+    } else {
+    callback(new Error('Not allowed by CORS')); // Block the request
+    }
+}
+}));
 app.use(express.json());  // Parse JSON payloads
 
 // Import database connection

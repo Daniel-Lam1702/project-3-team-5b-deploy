@@ -6,7 +6,6 @@ import Navbar from './Navbar';
 import { useFetchData } from '../../api/useFetchData';
 import MenuChoices from '../../components/MenuPage/MenuChoices';
 import Cart from './Cart';
-import EntreeChoices from './EntreeChoices'; // Import the EntreeChoices component
 
 /**
  * MenuPage component for displaying and managing the menu selection interface.
@@ -27,21 +26,29 @@ function MenuPage() {
     return menuItems.filter((menuItem) => menuItem.image !== null);
   }, [menuItems, menuItemsLoading]);
 
-  // Group item components into categories
-  const displayOnlyItemComponents = useMemo(() => {
-    if (itemComponentsLoading) return {};
-    let filteredItemComponents = new Map();
-    itemComponents.forEach((itemComponent) => {
-      const category = itemComponent.category || 'other';
-      addToFilteredMap(filteredItemComponents, category, itemComponent);
-    });
-    return filteredItemComponents;
-  }, [itemComponents, itemComponentsLoading]);
-
+  /**
+   * Handles the click event for selecting a menu item.
+   * @param {Object} item - The menu item that was clicked.
+   */
   const addToFilteredMap = (map, category, item) => {
     const items = map.get(category) || [];
     map.set(category, [...items, item]);
   };
+
+  /**
+   * Memoized value to filter item components into categories.
+   * @type {Map<string, Array>}
+   */
+  const displayOnlyItemComponents = useMemo(() => {
+    if (itemComponentsLoading) return {};
+    let filteredItemComponents = new Map();
+    itemComponents.forEach((itemComponent) => {
+      let category = itemComponent.category || 'other';
+      if (category.includes("entree")) category = "entrees";
+      addToFilteredMap(filteredItemComponents, category, itemComponent);
+    });
+    return filteredItemComponents;
+  }, [itemComponents, itemComponentsLoading]);
 
   // Handle menu item click to set initial view based on item type
   const handleMenuItemClick = (item) => {
@@ -76,24 +83,6 @@ function MenuPage() {
     setSelectedMenuItem(updatedMenuItem);
     if (view !== "side" && !(view === "entrees" && selectedMenuItem?.menuItem?.name === "Panda Bundle")) {
       setCartItems([...cartItems, updatedMenuItem]); // Add updated menu item to cart
-    }
-  };
-
-  const onAddToCart = (selectedEntrees) => {
-    // Ensure selectedEntrees is not empty and contains valid entries
-    if (selectedEntrees.length > 0) {
-      // Ensure selectedMenuItem is correctly defined
-      if (selectedMenuItem && selectedMenuItem.name) {
-        // Add the selected menu item along with the selected entrees to the cart
-        setCartItems((prevCartItems) => [
-          ...prevCartItems,
-          { ...selectedMenuItem, entrees: selectedEntrees },
-        ]);
-      } else {
-        console.error('Selected menu item is not valid');
-      }
-    } else {
-      console.error('No entrees selected');
     }
   };
 
@@ -147,17 +136,6 @@ function MenuPage() {
               menuItemSelection={selectedMenuItem}
               itemComponents={displayOnlyItemComponents}
             />
-          )}
-          {view === 'entrees' && (
-            <EntreeChoices 
-            entrees={entrees}
-            maxEntrees={maxEntrees}
-            selectedEntrees={selectedEntrees}
-            onSelectEntrees={handleSelectEntrees}
-            onAddToCart={handleAddToCart}
-            selectedMenuItem={selectedMenuItem} // Ensure this is passed correctly
-          />
-          
           )}
         </div>
       </div>
