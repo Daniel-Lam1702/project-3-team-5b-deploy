@@ -8,25 +8,25 @@ const CartItem = ({ item }) => {
     <div className="cart-item-details">
       <strong>Menu Item:</strong> {item.menuItem?.name || 'Unnamed Item'}
       <br />
-      {item.side?.length > 0 && (
+      {item.side && item.side.length > 0 && (
         <>
           <strong>Side:</strong> {item.side.map((side) => side.name).join(', ')}
           <br />
         </>
       )}
-      {item.entrees?.length > 0 && (
+      {item.entrees && item.entrees.length > 0 && (
         <>
           <strong>Entrees:</strong> {item.entrees.map((entree) => entree.name).join(', ')}
           <br />
         </>
       )}
-      {item.drink?.length > 0 && (
+      {item.drink && item.drink.length > 0 && (
         <>
           <strong>Drink:</strong> {item.drink.map((drink) => drink.name).join(', ')}
           <br />
         </>
       )}
-      {item.appetizer?.length > 0 && (
+      {item.appetizer && item.appetizer.length > 0 && (
         <>
           <strong>Appetizer:</strong> {item.appetizer.map((appetizer) => appetizer.name).join(', ')}
           <br />
@@ -36,7 +36,6 @@ const CartItem = ({ item }) => {
   );
 };
 
-// PropTypes validation for CartItem component
 CartItem.propTypes = {
   item: PropTypes.shape({
     menuItem: PropTypes.shape({
@@ -66,14 +65,14 @@ CartItem.propTypes = {
 };
 
 // Main Cart Component
-const Cart = ({ cartItems, onContinue }) => {
+const Cart = ({ cartItems, onContinue, clearCart }) => {
   return (
     <div className="cart">
       <h2>Your Cart</h2>
       <div className="cart-items-list">
         <h3>Selected Items</h3>
         <ul>
-          {cartItems?.length > 0 ? (
+          {cartItems && cartItems.length > 0 ? (
             cartItems.map((item, index) => (
               <li key={index}>
                 <CartItem item={item} />
@@ -84,14 +83,18 @@ const Cart = ({ cartItems, onContinue }) => {
           )}
         </ul>
       </div>
-      <button className="checkout-button" onClick={onContinue}>
-        Proceed to Checkout
-      </button>
+      <div className="cart-buttons">
+        <button className="checkout-button" onClick={onContinue}>
+          Proceed to Checkout
+        </button>
+        <button className="clear-cart-button" onClick={clearCart}>
+          Clear Cart
+        </button>
+      </div>
     </div>
   );
 };
 
-// PropTypes validation for Cart component
 Cart.propTypes = {
   cartItems: PropTypes.arrayOf(
     PropTypes.shape({
@@ -121,6 +124,7 @@ Cart.propTypes = {
     })
   ).isRequired,
   onContinue: PropTypes.func.isRequired,
+  clearCart: PropTypes.func.isRequired,
 };
 
 export default Cart;

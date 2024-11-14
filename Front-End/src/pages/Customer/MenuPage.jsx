@@ -6,103 +6,56 @@ import Navbar from './Navbar';
 import { useFetchData } from '../../api/useFetchData';
 import MenuChoices from '../../components/MenuPage/MenuChoices';
 import Cart from './Cart';
+import EntreeChoices from './EntreeChoices'; // Import the EntreeChoices component
 
 /**
  * MenuPage component for displaying and managing the menu selection interface.
  * @returns {JSX.Element} The MenuPage component.
  */
 function MenuPage() {
-  /** @type {[Object, Function]} State to manage the selected menu item */
   const [selectedMenuItem, setSelectedMenuItem] = useState({});
-  /** @type {[Array, Function]} State to manage the items in the cart */
   const [cartItems, setCartItems] = useState([]);
-  /** @type {[string, Function]} State to manage the current view of the page */
   const [view, setView] = useState("");
 
-  // Fetching menu items data
+  // Fetch menu items and item components
   const { data: menuItems, loading: menuItemsLoading, error: menuItemsError } = useFetchData('menu-items');
-  // Fetching item components data
   const { data: itemComponents, loading: itemComponentsLoading, error: itemComponentsError } = useFetchData('item-components');
 
-  /**
-   * Memoized value to filter and display only menu items that have an image.
-   * @type {Array}
-   */
+  // Filtered menu items with images
   const displayOnlyMenuItems = useMemo(() => {
     if (menuItemsLoading) return [];
     return menuItems.filter((menuItem) => menuItem.image !== null);
   }, [menuItems, menuItemsLoading]);
 
-  /**
-   * Adds an item to a category in a map.
-   * @param {Map} map - The map to update.
-   * @param {string} category - The category to add the item to.
-   * @param {Object} item - The item to add.
-   */
-  const addToFilteredMap = (map, category, item) => {
-    const itemArray = map.get(category) || [];
-    itemArray.push(item);
-    map.set(category, itemArray);
-  };
-
-  /**
-   * Memoized value to filter item components into categories.
-   * @type {Map<string, Array>}
-   */
+  // Group item components into categories
   const displayOnlyItemComponents = useMemo(() => {
     if (itemComponentsLoading) return {};
     let filteredItemComponents = new Map();
     itemComponents.forEach((itemComponent) => {
-      switch (itemComponent.category) {
-        case 'appetizer':
-          addToFilteredMap(filteredItemComponents, 'appetizer', itemComponent);
-          break;
-        case 'regular_entree':
-        case 'premium_entree':
-          addToFilteredMap(filteredItemComponents, 'entrees', itemComponent);
-          break;
-        case 'side':
-          addToFilteredMap(filteredItemComponents, 'side', itemComponent);
-          break;
-        case 'drink':
-          addToFilteredMap(filteredItemComponents, 'drink', itemComponent);
-          break;
-        default:
-          break;
-      }
+      const category = itemComponent.category || 'other';
+      addToFilteredMap(filteredItemComponents, category, itemComponent);
     });
     return filteredItemComponents;
   }, [itemComponents, itemComponentsLoading]);
 
-  /**
-   * Handles the click event for selecting a menu item.
-   * @param {Object} item - The menu item that was clicked.
-   */
-  const handleMenuItemClick = (item) => {
-    setSelectedMenuItem({ menuItem: item });
-    // Set the initial view based on the selected item
-    if (item.name === "A La Carte") {
-      setView('A La Carte');
-    } else if (item.maxsides > 0) {
-      setView('side');
-    } else if (item.maxentrees > 0) {
-      setView('entrees');
-    } else if (item.hasdrink) {
-      setView('drink');
-    } else if (!item.maxsides && !item.maxentrees && !item.hasdrink) {
-      setView('appetizer');
-    } else {
-      setView('cart');
-    }
+  const addToFilteredMap = (map, category, item) => {
+    const items = map.get(category) || [];
+    map.set(category, [...items, item]);
   };
 
-  /**
-   * Handles the continue action for adding a selection to the cart or moving to the next step.
-   * @param {Array} menuChoice - The selected menu choices.
-   */
+  // Handle menu item click to set initial view based on item type
+  const handleMenuItemClick = (item) => {
+    setSelectedMenuItem({ menuItem: item });
+    if (item.name === "A La Carte") setView('A La Carte');
+    else if (item.maxsides > 0) setView('side');
+    else if (item.maxentrees > 0) setView('entrees');
+    else if (item.hasdrink) setView('drink');
+    else if (!item.maxsides && !item.maxentrees && !item.hasdrink) setView('appetizer');
+    else setView('cart');
+  };
+
   const onContinue = (menuChoice) => {
     let updatedMenuItem = { ...selectedMenuItem };
-
     if (view === "side") {
       updatedMenuItem.side = menuChoice;
       setView("entrees");
@@ -114,33 +67,45 @@ function MenuPage() {
       updatedMenuItem = isEntree ? { ...updatedMenuItem, entrees: menuChoice } : { ...updatedMenuItem, side: menuChoice };
       setView("checkout");
     } else {
-      if (view === "drink") {
-        updatedMenuItem.drink = menuChoice;
-      } else if (view === "appetizer") {
-        updatedMenuItem.appetizer = menuChoice;
-      } else {
-        updatedMenuItem.entrees = menuChoice;
-      }
+      if (view === "drink") updatedMenuItem.drink = menuChoice;
+      else if (view === "appetizer") updatedMenuItem.appetizer = menuChoice;
+      else updatedMenuItem.entrees = menuChoice;
       setView("checkout");
     }
 
     setSelectedMenuItem(updatedMenuItem);
-
-    // Add to cart if transitioning to checkout
     if (view !== "side" && !(view === "entrees" && selectedMenuItem?.menuItem?.name === "Panda Bundle")) {
-      setCartItems([...cartItems, updatedMenuItem]);
+      setCartItems([...cartItems, updatedMenuItem]); // Add updated menu item to cart
     }
   };
 
-  /**
-   * Handles the checkout action.
-   */
-  const onCheckout = () => {
-    console.log('Proceeding to checkout');
-    console.log(cartItems);
+  const onAddToCart = (selectedEntrees) => {
+    // Ensure selectedEntrees is not empty and contains valid entries
+    if (selectedEntrees.length > 0) {
+      // Ensure selectedMenuItem is correctly defined
+      if (selectedMenuItem && selectedMenuItem.name) {
+        // Add the selected menu item along with the selected entrees to the cart
+        setCartItems((prevCartItems) => [
+          ...prevCartItems,
+          { ...selectedMenuItem, entrees: selectedEntrees },
+        ]);
+      } else {
+        console.error('Selected menu item is not valid');
+      }
+    } else {
+      console.error('No entrees selected');
+    }
   };
 
-  // Render a loading spinner if data is loading
+  const onCheckout = () => {
+    console.log('Proceeding to checkout', cartItems);
+  };
+
+  // Clear cart function to reset cart items
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   if (menuItemsLoading || itemComponentsLoading) {
     return (
       <div className='loading-container'>
@@ -149,7 +114,6 @@ function MenuPage() {
     );
   }
 
-  // Render an error message if there was an error fetching data
   if (menuItemsError || itemComponentsError) {
     return <p>Error loading menu items or item components: {menuItemsError?.message || itemComponentsError?.message}</p>;
   }
@@ -168,16 +132,32 @@ function MenuPage() {
                 description={item.description}
                 image={item.image}
                 onClick={() => handleMenuItemClick(item)}
-                isSelected={selectedMenuItem && selectedMenuItem.menuItem && selectedMenuItem.menuItem.name === item.name}
+                isSelected={selectedMenuItem?.menuItem?.name === item.name}
               />
             ))}
           </div>
         </div>
         <div className="menu-main-content">
           {view === "checkout" ? (
-            <Cart cartItems={cartItems} onContinue={onCheckout} />
+            <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />
           ) : (
-            <MenuChoices onContinue={onContinue} view={view} menuItemSelection={selectedMenuItem} itemComponents={displayOnlyItemComponents} />
+            <MenuChoices
+              onContinue={onContinue}
+              view={view}
+              menuItemSelection={selectedMenuItem}
+              itemComponents={displayOnlyItemComponents}
+            />
+          )}
+          {view === 'entrees' && (
+            <EntreeChoices 
+            entrees={entrees}
+            maxEntrees={maxEntrees}
+            selectedEntrees={selectedEntrees}
+            onSelectEntrees={handleSelectEntrees}
+            onAddToCart={handleAddToCart}
+            selectedMenuItem={selectedMenuItem} // Ensure this is passed correctly
+          />
+          
           )}
         </div>
       </div>
