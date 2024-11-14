@@ -22,7 +22,6 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
     const [title, setTitle] = useState("");
     /** @type {Array} State to manage the list of item components to display */
     const [displayItemComponents, setDisplayItemComponents] = useState([]);
-
     /**
      * useEffect hook to set max number of choices, title, and displayed items based on the current view.
      */
@@ -40,7 +39,6 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
         } else {
             updatedMaxChoices = menuItemSelection.menuItem.maxentrees;
         }
-        
         setMaxChoices(updatedMaxChoices);
 
         if (view === "A La Carte"){
@@ -50,6 +48,7 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
             setDisplayItemComponents(itemComponents.get(view));
             setTitle(`Select ${updatedMaxChoices} ${view.charAt(0).toUpperCase() + view.slice(1)}`);
         }
+        setSelectedMenuChoices([])
     }, [itemComponents, view, menuItemSelection, setMaxChoices]);
 
     /**
@@ -106,7 +105,8 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
                     aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
                     type="button"
                 >
-                    {itemComponent.name}
+                    <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
+                    <h3>{itemComponent.name}</h3>
                 </button>
                 ))}
             </div>
