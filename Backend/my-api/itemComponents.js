@@ -10,8 +10,14 @@ app.listen(PORT, () => {
 
 let itemComponents = [];
 
-app.get('/my-api/item-components', (req, res) => {
-    res.json(itemComponents);
+app.get('/my-api/item-components', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM cashier');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
 });
 
 app.post('/my-api/item-components', (req, res) => {

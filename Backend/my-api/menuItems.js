@@ -10,8 +10,14 @@ app.listen(PORT, () => {
 
 let menuItems = [];
 
-app.get('/my-api/menu-items', (req, res) => {
-    res.json(menuItems);
+app.get('/my-api/menu-items', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM cashier');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
 });
 
 app.post('/my-api/menu-items', (req, res) => {

@@ -11,12 +11,14 @@ import Cart from './pages/Customer/Cart';
 import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
+import GoogleTranslate from './pages/Translation/GoogleTranslate';
 
 function App() {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
     <Router>
+      <GoogleTranslate/>
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
