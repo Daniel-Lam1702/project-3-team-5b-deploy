@@ -37,8 +37,8 @@ function CashierMenuPage({ setShowSidebar }) {
   };
 
   const handleContinueToEntrees = (selectedSides) => {
-    setSelectedSides(selectedSides);
-    setView('entrees');
+    setSelectedSides(selectedSides); // Save the selected sides
+    setView('entrees'); // Switch view to entrees
   };
 
   const handleContinueToCart = () => {
@@ -87,16 +87,16 @@ function CashierMenuPage({ setShowSidebar }) {
                 <SideChoices 
                   sides={sides} 
                   maxSides={selectedMenuItem.maxSides}
-                  onContinue={handleContinueToEntrees} 
+                  onContinue={handleContinueToEntrees} // Pass continue handler for sides
                 />
               )}
               {view === 'entrees' && (
                 <EntreeChoices 
                   entrees={entrees} 
                   maxEntrees={selectedMenuItem.maxEntrees}
-                  selectedEntrees={selectedEntrees} // Pass selected entrees array
+                  selectedEntrees={selectedEntrees} // Pass selected entrees
                   onSelectEntrees={handleSelectEntrees} // Correct function name
-                  onContinue={handleContinueToCart} 
+                  onContinue={handleContinueToCart} // Pass continue handler for entrees
                 />
               )}
               {view === 'cart' && (
