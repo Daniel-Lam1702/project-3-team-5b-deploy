@@ -122,9 +122,9 @@ Cart.propTypes = {
         })
       ),
     })
-  ).isRequired,
-  onContinue: PropTypes.func.isRequired,
-  clearCart: PropTypes.func.isRequired,
+  ),
+  onContinue: PropTypes.func,
+  clearCart: PropTypes.func,
 };
 
 export default Cart;
