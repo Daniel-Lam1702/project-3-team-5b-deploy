@@ -2,75 +2,78 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Cart.css'; // Ensure to add your CSS styles here
 
-
+// Individual Cart Item Component
 const CartItem = ({ item }) => {
   return (
-    <>
+    <div className="cart-item-details">
       <strong>Menu Item:</strong> {item.menuItem?.name || 'Unnamed Item'}
       <br />
-      {item.side && item.side.length > 0 && (
+      {item.side?.length > 0 && (
         <>
-          <strong>Side:</strong> {item.side.map(side => side.name).join(', ')}
+          <strong>Side:</strong> {item.side.map((side) => side.name).join(', ')}
           <br />
         </>
       )}
-      {item.entrees && item.entrees.length > 0 && (
+      {item.entrees?.length > 0 && (
         <>
-          <strong>Entrees:</strong> {item.entrees.map(entree => entree.name).join(', ')}
+          <strong>Entrees:</strong> {item.entrees.map((entree) => entree.name).join(', ')}
           <br />
         </>
       )}
-      {item.drink && item.drink.length > 0 && (
+      {item.drink?.length > 0 && (
         <>
-          <strong>Drink:</strong> {item.drink.map(drink => drink.name).join(', ')}
+          <strong>Drink:</strong> {item.drink.map((drink) => drink.name).join(', ')}
           <br />
         </>
       )}
-      {item.appetizer && item.appetizer.length > 0 && (
+      {item.appetizer?.length > 0 && (
         <>
-          <strong>Appetizer:</strong> {item.appetizer.map(appetizer => appetizer.name).join(', ')}
+          <strong>Appetizer:</strong> {item.appetizer.map((appetizer) => appetizer.name).join(', ')}
           <br />
         </>
       )}
-    </>
+    </div>
   );
 };
 
-// Adding prop types validation
+// PropTypes validation for CartItem component
 CartItem.propTypes = {
   item: PropTypes.shape({
     menuItem: PropTypes.shape({
       name: PropTypes.string,
     }),
-    side: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-    })),
-    entrees: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-    })),
-    drink: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-    })),
-    appetizer: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string,
-    })),
+    side: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ),
+    entrees: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ),
+    drink: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ),
+    appetizer: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string,
+      })
+    ),
   }).isRequired,
 };
 
-
-
+// Main Cart Component
 const Cart = ({ cartItems, onContinue }) => {
-  if (!cartItems) {
-    return <div>Loading Cart...</div>;
-  }
-  console.log(cartItems);
   return (
     <div className="cart">
       <h2>Your Cart</h2>
-      <div className="cart-item">
+      <div className="cart-items-list">
         <h3>Selected Items</h3>
         <ul>
-          {cartItems.length > 0 ? (
+          {cartItems?.length > 0 ? (
             cartItems.map((item, index) => (
               <li key={index}>
                 <CartItem item={item} />
@@ -88,19 +91,36 @@ const Cart = ({ cartItems, onContinue }) => {
   );
 };
 
+// PropTypes validation for Cart component
 Cart.propTypes = {
   cartItems: PropTypes.arrayOf(
     PropTypes.shape({
       menuItem: PropTypes.shape({
-        name: PropTypes.string
+        name: PropTypes.string.isRequired,
       }).isRequired,
-      entrees: PropTypes.arrayOf(PropTypes.string),
-      side: PropTypes.arrayOf(PropTypes.string),
-      drink: PropTypes.arrayOf(PropTypes.string),
-      appetizer: PropTypes.arrayOf(PropTypes.string)
+      entrees: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
+      side: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
+      drink: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
+      appetizer: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
     })
-  ),
-  onContinue: PropTypes.func,
+  ).isRequired,
+  onContinue: PropTypes.func.isRequired,
 };
 
 export default Cart;

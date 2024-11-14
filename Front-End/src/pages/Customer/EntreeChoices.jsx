@@ -1,7 +1,7 @@
 import React from 'react';
-import './EntreeChoices.css'; // Ensure you have your styles defined
+import './EntreeChoices.css';
 
-const EntreeChoices = ({ entrees, maxEntrees, selectedEntrees = [], onSelectEntrees, onContinue }) => {
+const EntreeChoices = ({ entrees, maxEntrees, selectedEntrees = [], onSelectEntrees, onAddToCart }) => {
   return (
     <div className="entree-choices">
       <h2>Select Your Entree (Max: {maxEntrees})</h2>
@@ -14,10 +14,8 @@ const EntreeChoices = ({ entrees, maxEntrees, selectedEntrees = [], onSelectEntr
               className={`entree-item ${isSelected ? 'selected' : ''}`}
               onClick={() => {
                 if (isSelected) {
-                  // Deselect if already selected
                   onSelectEntrees(selectedEntrees.filter(e => e !== entree));
                 } else if (selectedEntrees.length < maxEntrees) {
-                  // Select if not already selected and max not reached
                   onSelectEntrees([...selectedEntrees, entree]);
                 }
               }} 
@@ -29,10 +27,14 @@ const EntreeChoices = ({ entrees, maxEntrees, selectedEntrees = [], onSelectEntr
       </div>
       <button 
         className={`continue-button ${selectedEntrees.length > 0 ? 'active' : ''}`} 
-        onClick={onContinue} 
+        onClick={() => {
+          if (selectedEntrees.length > 0) {
+            onAddToCart(selectedEntrees);
+          }
+        }} 
         disabled={selectedEntrees.length === 0}
       >
-        Continue to Cart
+        Add to Cart
       </button>
     </div>
   );
