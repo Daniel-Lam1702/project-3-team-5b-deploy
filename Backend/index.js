@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware setup
-app.use(cors());  // Enable CORS
+app.use(cors({ origin: 'https://project-3-team-5b.onrender.com' }));  // Enable CORS
 app.use(express.json());  // Parse JSON payloads
 
 // Import database connection
