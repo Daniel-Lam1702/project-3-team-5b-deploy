@@ -24,35 +24,25 @@ function ManagerHome() {
     });
   };
 
-  var logout = function() {
-    document.location.href = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://project-3-team-5b.onrender.com";
-  }
-
-  // const handleStartOrder = () => {
-  //   navigate('/menu'); 
-  // };
+  const handleManageStuffClick = () => {
+    navigate('/manage-stuff');
+  };
 
   return (
     <div className="grid grid-cols-2 w-full h-[90vh] gap-4">
       <div className='flex justify-center items-center'>
-        <button className="back-button" onClick={() => {navigate('/')}}>
-          &#8592; Home
-        </button>
-        <LandingPageButton label='Logout' Icon={HomeIcon} style={style} onClick={() => {}}/>
-        <LandingPageButton label='Inventory' Icon={HomeIcon} style={style} onClick={() => {}}/>
-        <LandingPageButton label='Sales Reports' Icon={HomeIcon} style={style} onClick={() => {}}/>
-        <LandingPageButton label='Admin' Icon={HomeIcon} style={style} onClick={() => {}}/>
+        <LandingPageButton label="MANAGE STUFF" Icon={HomeIcon} style={style} onClick={handleManageStuffClick} />
       </div>
       <div className='flex justify-center items-center '>
         <ul className='grid grid-cols-1 gap-10'>
           <li>
-            <LandingPageButton label='Change Language' Icon={GTranslateIcon} style={style} onClick={() => {}} />
+            <LandingPageButton label="Change Language" Icon={GTranslateIcon} style={style} onClick={() => {}} />
           </li>
           <li>
-            <LandingPageButton label={"High-contrast mode"} Icon={ContrastIcon} style={style} onClick={toggleContrast} />
+            <LandingPageButton label="High-contrast mode" Icon={ContrastIcon} style={style} onClick={toggleContrast} />
           </li>
           <li>
-            <LandingPageButton label={"Enlarge Text"} Icon={TextIncreaseIcon} style={style} onClick={() => {}} />
+            <LandingPageButton label="Enlarge Text" Icon={TextIncreaseIcon} style={style} onClick={() => {}} />
           </li>
         </ul>
       </div>

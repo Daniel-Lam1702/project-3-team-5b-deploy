@@ -1,0 +1,23 @@
+.manage-stuff-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 50px;
+  }
+  
+  .manage-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .manage-button:hover {
+    background-color: #333333;
+  }
+  

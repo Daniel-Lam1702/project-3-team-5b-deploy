@@ -9,6 +9,8 @@ import CashierHome from './pages/Cashier/CashierHome';
 import './App.css';
 import Cart from './pages/Customer/Cart';
 import CashierMenuPage from './pages/Cashier/CashierOrderPage';
+import ManageStuff from './pages/Manager/ManageStuff';
+import Sales from './pages/Manager/Sales';
 
 function App() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -24,6 +26,8 @@ function App() {
         <Route path="/menu-board" element={<MenuBoard />} />
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}/>
+        <Route path="/manage-stuff" element={<ManageStuff />} />
+        <Route path="/sales" element={<Sales />} />
       </Routes>
     </Router>
   );
