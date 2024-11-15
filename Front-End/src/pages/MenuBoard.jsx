@@ -94,7 +94,7 @@ const MenuBoard = () => {
           <h2>Appetizers</h2>
           {appetizers.map((item, index) => (
             <div key={index} className="item">
-              <img src={item.image} alt={item.name} />
+              <img src={item.image} alt={item.name}/>
               <div>
                 <h3>{item.name}</h3>
                 <p>${item.price}</p>
