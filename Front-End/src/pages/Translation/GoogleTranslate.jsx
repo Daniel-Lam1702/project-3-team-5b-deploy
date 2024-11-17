@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function GoogleTranslate () {
+    const isInitialized = useRef(false);
+
     const googleTranslateElementInit = () => {
+        if(isInitialized.current) 
+            return;
         new window.google.translate.TranslateElement(
         {
             pageLanguage: "en",
-            autoDisplay: false
+            autoDisplay: true
         },
         "google-translate"
         );
+        isInitialized.current = true;
     };
 
     useEffect(() => {
