@@ -1,48 +1,62 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import './MenuBoard.css';
+import { useFetchData } from '../api/useFetchData';
+import { CircularProgress } from '@mui/material';
 
 const MenuBoard = () => {
 
+  const { data: menuItems, loading: menuItemsLoading, error: menuItemsError } = useFetchData('menu-items');
+  const { data: itemComponents, loading: itemComponentsLoading, error: itemComponentsError } = useFetchData('item-components');
 
-  const menuItems = [
-    { name: 'Bowl', description: '1 side, 1 entree', price: '8.30', image: '/MenuItemImages/MenuItem/Bowl.avif' },
-    { name: 'Plate', description: '1 side, 2 entrees', price: '9.80', image: '/MenuItemImages/MenuItem/Plate.avif' },
-    { name: 'Bigger Plate', description: '1 side, 3 entrees', price: '11.30', image: '/MenuItemImages/MenuItem/BiggerPlate.avif' },
-    { name: 'A La Carte', description: '1 side/entree', price: '4.30', image: '/MenuItemImages/MenuItem/ALaCarte.avif' },
-    { name: 'Panda Bundle', description: '1 Bowl, Plate, or Bigger Plate with a Drink', price: '10.40+', image: '/MenuItemImages/MenuItem/PandaBundle.avif' },
-  ];
+  // Filtered menu items with images
+  const displayOnlyMenuItems = useMemo(() => {
+    if (menuItemsLoading) return [];
+    return menuItems.filter((menuItem) => menuItem.image !== null);
+  }, [menuItems, menuItemsLoading]);
 
-  const entrees = [
-    { name: 'Orange Chicken', image: '/MenuItemImages/Entrees/OrangeChicken.png' },
-    { name: 'Beijing Beef', image: '/MenuItemImages/Entrees/BeijingBeef.png' },
-    { name: 'Broccoli Beef', image: '/MenuItemImages/Entrees/BroccoliBeef.png' },
-    { name: 'Teriyaki Chicken', image: '/MenuItemImages/Entrees/TeriyakiChicken.png' },
-    { name: 'Mushroom Chicken', image: '/MenuItemImages/Entrees/MushroomChicken.png' },
-    { name: 'Sweetfire Chicken', image: '/MenuItemImages/Entrees/SweetfireChicken.png' },
-    { name: 'Bourbon Chicken', image: '/MenuItemImages/Entrees/BourbonChicken.png' },
-    { name: 'Honey Walnut Shrimp', image: '/MenuItemImages/Entrees/HoneyWalnutShrimp.png', price: '(Premium $1.50)' },
-    { name: 'Firecracker Shrimp', image: '/MenuItemImages/Entrees/FirecrackerShrimp.png', price: '(Premium $1.50)' }
-  ];
+  /**
+   * Handles the click event for selecting a menu item.
+   * @param {Object} item - The menu item that was clicked.
+   */
+  const addToFilteredMap = (map, category, item) => {
+    const items = map.get(category) || [];
+    map.set(category, [...items, item]);
+  };
 
-  const sides = [
-    { name: 'Chow Mein', image: '/MenuItemImages/Sides/ChowMein.png' },
-    { name: 'Fried Rice', image: '/MenuItemImages/Sides/FriedRice.png' },
-    { name: 'White Rice', image: '/MenuItemImages/Sides/WhiteRice.png' },
-    { name: 'Super Greens', image: '/MenuItemImages/Sides/SuperGreens.png' },
-  ];
+  /**
+   * Memoized value to filter item components into categories.
+   * @type {Map<string, Array>}
+   */
+  const displayOnlyItemComponents = useMemo(() => {
+    if (itemComponentsLoading) return {};
+    let filteredItemComponents = new Map();
+    itemComponents.forEach((itemComponent) => {
+      let category = itemComponent.category || 'other';
+      if (category.includes("entree")) category = "entrees";
+      addToFilteredMap(filteredItemComponents, category, itemComponent);
+    });
+    return filteredItemComponents;
+  }, [itemComponents, itemComponentsLoading]);
 
-  const appetizers = [
-    { name: 'Chicken Egg Roll', price: '2.00', image: '/MenuItemImages/Appetizers/ChickenEggRoll.avif' },
-    { name: 'Veggie Spring Roll', price: '2.00', image: '/MenuItemImages/Appetizers/VeggieSpringRoll.avif' },
-    { name: 'Cream Cheese Rangoon', price: '2.00', image: '/MenuItemImages/Appetizers/CreamCheeseRangoons.avif' },
-    { name: 'Apple Pie', price: '2.00', image: '/MenuItemImages/Appetizers/VeggieSpringRoll.avif' },
-  ];
+  if (menuItemsLoading || itemComponentsLoading) {
+    return (
+      <div className='loading-container'>
+        <CircularProgress style={{ color: "white", width: '300px', height: '300px' }} />
+      </div>
+    );
+  }
 
-  const drinks = [
-    { name: 'Coke', price: '4.20', image: '/MenuItemImages/Drinks/Coke.avif' },
-    { name: 'Sprite', price: '2.10', image: '/MenuItemImages/Drinks/Sprite.avif' },
-    { name: 'Tea', price: '2.10', image: '/MenuItemImages/Drinks/Tea.avif' },
-  ];
+  if (menuItemsError || itemComponentsError) {
+    return <p>Error loading menu items or item components: {menuItemsError?.message || itemComponentsError?.message}</p>;
+  }
+
+  const entrees = displayOnlyItemComponents.get("entrees");
+
+  const sides = displayOnlyItemComponents.get("side");
+
+  const appetizers = displayOnlyItemComponents.get("appetizer");
+
+  const drinks = displayOnlyItemComponents.get("drink");
 
   return (
     <div className="menu-board-container">
@@ -55,13 +69,13 @@ const MenuBoard = () => {
       <div className="menu-board">
         <div className="column">
           <h2>Menu Items</h2>
-          {menuItems.map((item, index) => (
+          {displayOnlyMenuItems.map((item, index) => (
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <div>
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>
-                <p>${item.price}</p>
+                <p>Starting from ${item.base_price}</p>
               </div>
             </div>
           ))}
@@ -74,7 +88,7 @@ const MenuBoard = () => {
               <img src={item.image} alt={item.name} />
               <div>
                 <h3>{item.name}</h3>
-                {item.price && <p>{item.price}</p>}
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p>Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
@@ -86,6 +100,7 @@ const MenuBoard = () => {
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <h3>{item.name}</h3>
+              {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p>Premium Extra Cost: ${item.extra_cost}</p> : null}
             </div>
           ))}
         </div>
@@ -97,7 +112,7 @@ const MenuBoard = () => {
               <img src={item.image} alt={item.name}/>
               <div>
                 <h3>{item.name}</h3>
-                <p>${item.price}</p>
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p>Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
@@ -107,7 +122,7 @@ const MenuBoard = () => {
               <img src={item.image} alt={item.name} />
               <div>
                 <h3>{item.name}</h3>
-                <p>${item.price}</p>
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p>Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
