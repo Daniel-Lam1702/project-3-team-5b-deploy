@@ -117,25 +117,26 @@ function MenuPage() {
             {displayOnlyMenuItems.map((item, index) => (
               <MenuItem
                 key={index + item.name}
-                name={item.name}
-                description={item.description}
-                image={item.image}
+                menuItem={item}
                 onClick={() => handleMenuItemClick(item)}
-                isSelected={selectedMenuItem?.menuItem?.name === item.name}
               />
             ))}
           </div>
         </div>
-        <div className="menu-main-content">
-          {view === "checkout" ? (
-            <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />
-          ) : (
-            <MenuChoices
-              onContinue={onContinue}
-              view={view}
-              menuItemSelection={selectedMenuItem}
-              itemComponents={displayOnlyItemComponents}
-            />
+
+        <div className="menu-detail">
+          {view === "cart" && <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />}
+          {view === "side" && (
+            <MenuChoices choices={displayOnlyItemComponents.get("side")} category="side" onClick={onContinue} />
+          )}
+          {view === "entrees" && (
+            <MenuChoices choices={displayOnlyItemComponents.get("entrees")} category="entrees" onClick={onContinue} />
+          )}
+          {view === "drink" && (
+            <MenuChoices choices={displayOnlyItemComponents.get("drink")} category="drink" onClick={onContinue} />
+          )}
+          {view === "appetizer" && (
+            <MenuChoices choices={displayOnlyItemComponents.get("appetizer")} category="appetizer" onClick={onContinue} />
           )}
         </div>
       </div>
