@@ -11,6 +11,7 @@ import Cart from './pages/Customer/Cart';
 import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
+import Inventory from './pages/Manager/Inventory';
 import GoogleTranslate from './pages/Translation/GoogleTranslate';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}/>
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
+        <Route path="/inventory" element={<Inventory />} />
       </Routes>
     </Router>
   );
