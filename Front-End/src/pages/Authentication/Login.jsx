@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css'
+import Navbar from './Navbar';
 
 function Login() {
   const navigate = useNavigate(); 
@@ -89,16 +90,21 @@ function oauthSignInCashier() {
   form.submit();
 }
 
-  return <div className="login-page flex flex-col gap-14 justify-center items-center">
-    <div className='flex gap-10'>
-      <button className='bg-black text-white p-8 rounded-2xl font-bold text-3xl' onClick={onClickMenuBoardHandler}>Menu Board</button>
-      <button className='bg-black text-white p-8 rounded-2xl font-bold text-3xl' onClick={onClickCustomerHandler}>Customer View</button>
+  return (
+  <>
+    <Navbar/>
+    <div className="login-page flex flex-col gap-14 justify-center items-center">
+      <div className='flex gap-10'>
+        <button className='bg-black text-white p-8 rounded-2xl font-bold text-3xl' onClick={onClickMenuBoardHandler}>Menu Board</button>
+        <button className='bg-black text-white p-8 rounded-2xl font-bold text-3xl' onClick={onClickCustomerHandler}>Customer View</button>
+      </div>
+      <div className='flex gap-10 justify-center w-[100%] items-center'>
+        <button className='bg-black text-white p-5 font-bold w-[300px] h-[183.18px] rounded-2xl text-3xl' onClick={onClickManagerHandler}>Login As Manager</button>
+        <button className='bg-black text-white p-5 font-bold w-[300px] h-[183.18px] rounded-2xl  text-3xl' onClick={onClickCashierHandler}>Login As Cashier</button>
+      </div>
     </div>
-    <div className='flex gap-10 justify-center w-[100%] items-center'>
-      <button className='bg-black text-white p-5 font-bold w-[300px] h-[183.18px] rounded-2xl text-3xl' onClick={onClickManagerHandler}>Login As Manager</button>
-      <button className='bg-black text-white p-5 font-bold w-[300px] h-[183.18px] rounded-2xl  text-3xl' onClick={onClickCashierHandler}>Login As Cashier</button>
-    </div>
-  </div>;
+  </>
+  );
 }
 
 export default Login;
