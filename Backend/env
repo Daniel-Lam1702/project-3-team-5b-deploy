@@ -1,6 +1,0 @@
-PORT=5000
-PG_HOST=csce-315-db.engr.tamu.edu
-PG_PORT=5432
-PG_USER=team_5b
-PG_PASSWORD=longmoney60
-PG_DATABASE=team_5b_db
