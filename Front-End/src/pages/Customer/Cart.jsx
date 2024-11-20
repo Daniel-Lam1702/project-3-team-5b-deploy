@@ -1,18 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Cart.css'; // Ensure to add your CSS styles here
-import CartItem from './CartItem'; // Imported component
+import './Cart.css'; 
+import CartItem from './CartItem';
 
 const Cart = ({ cartItems, onContinue, clearCart }) => {
-  const renderSides = (sides) => {
-    if (Array.isArray(sides)) {
-      return sides.map((side, index) => (
-        <span key={index}>{side.name || side}</span> // handle both object and string cases
-      ));
-    }
-    return null;
-  };
-
   return (
     <div className="cart">
       <h2>Your Cart</h2>
@@ -22,7 +13,7 @@ const Cart = ({ cartItems, onContinue, clearCart }) => {
           {cartItems && cartItems.length > 0 ? (
             cartItems.map((item, index) => (
               <li key={index}>
-                <CartItem item={item} renderSides={renderSides} />
+                <CartItem item={item} />
               </li>
             ))
           ) : (
@@ -30,16 +21,14 @@ const Cart = ({ cartItems, onContinue, clearCart }) => {
           )}
         </ul>
       </div>
-      {onContinue && clearCart && (
-        <div className="cart-buttons">
-          <button className="checkout-button" onClick={onContinue}>
-            Proceed to Checkout
-          </button>
-          <button className="clear-cart-button" onClick={clearCart}>
-            Clear Cart
-          </button>
-        </div>
-      )}
+      <div className="cart-buttons">
+        <button className="checkout-button" onClick={onContinue}>
+          Proceed to Checkout
+        </button>
+        <button className="clear-cart-button" onClick={clearCart}>
+          Clear Cart
+        </button>
+      </div>
     </div>
   );
 };
@@ -50,42 +39,37 @@ Cart.propTypes = {
       menuItem: PropTypes.shape({
         name: PropTypes.string.isRequired,
       }).isRequired,
-      entrees: PropTypes.oneOfType([ 
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string,
-          })
-        ),
-        PropTypes.arrayOf(PropTypes.string),
-      ]),
       sides: PropTypes.oneOfType([ 
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string,
-          })
-        ),
         PropTypes.arrayOf(PropTypes.string),
+        PropTypes.arrayOf(PropTypes.shape({
+          name: PropTypes.string,
+        })),
       ]),
-      drink: PropTypes.oneOfType([ 
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string,
-          })
-        ),
-        PropTypes.arrayOf(PropTypes.string),
-      ]),
-      appetizer: PropTypes.oneOfType([ 
-        PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string,
-          })
-        ),
-        PropTypes.arrayOf(PropTypes.string),
-      ]),
+      entrees: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
+      drink: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
+      appetizer: PropTypes.arrayOf(
+        PropTypes.shape({
+          name: PropTypes.string,
+        })
+      ),
     })
   ).isRequired,
   onContinue: PropTypes.func,
   clearCart: PropTypes.func,
+};
+
+Cart.defaultProps = {
+  cartItems: [],
+  onContinue: () => {},
+  clearCart: () => {},
 };
 
 export default Cart;
