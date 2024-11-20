@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import MenuItem from '../Customer/MenuItem';
 import SideChoices from '../Customer/SideChoices';
-import EntreeChoices from '../Customer/EntreeChoices'; 
+import EntreeChoices from '../Customer/EntreeChoices';
 import Cart from '../Customer/Cart';
 import '../Customer/MenuPage.css';
 import CashierNavbar from './CashierNavbar';
 
-function CashierMenuPage({ setShowSidebar }) {
+function CashierOrderPage({ setShowSidebar }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(null);
   const [sides] = useState(['Chow Mein', 'Fried Rice', 'White Rice', 'Super Greens']);
-  const [selectedEntrees, setSelectedEntrees] = useState([]); // Updated to handle multiple entrees
+  const [selectedEntrees, setSelectedEntrees] = useState([]);
   const [selectedSides, setSelectedSides] = useState([]);
   const [cartItems, setCartItems] = useState([]);
-  const [view, setView] = useState('sides');
+  const [view, setView] = useState('menu'); // Initial view is 'menu'
 
   const menuItems = [
     { name: 'Bowl', description: 'Choose 1 entree and 1 side', image: '/MenuItemImages/MenuItem/Bowl.avif', maxEntrees: 1, maxSides: 1 },
@@ -23,57 +23,57 @@ function CashierMenuPage({ setShowSidebar }) {
   ];
 
   const entrees = [
-    'Orange Chicken', 'Teriyaki Chicken', 'Bourbon Chicken', 
-    'Sweetfire Chicken', 'Firecracker Shrimp', 
-    'Honey Walnut Shrimp', 'Kung Pao Chicken', 
+    'Orange Chicken', 'Teriyaki Chicken', 'Bourbon Chicken',
+    'Sweetfire Chicken', 'Firecracker Shrimp',
+    'Honey Walnut Shrimp', 'Kung Pao Chicken',
     'Beijing Beef', 'Broccoli Beef', 'Mushroom Chicken'
   ];
 
   const handleMenuItemClick = (item) => {
     setSelectedMenuItem(item);
-    setSelectedEntrees([]); // Reset selected entrees when menu item is clicked
-    setSelectedSides([]);
-    setView('sides');
+    setSelectedEntrees([]); // Reset selected entrees
+    setSelectedSides([]);   // Reset selected sides
+    setView('sides');       // Show sides view after selecting a menu item
   };
 
   const handleContinueToEntrees = (selectedSides) => {
-    setSelectedSides(selectedSides); // Save the selected sides
-    setView('entrees'); // Switch view to entrees
+    setSelectedSides(selectedSides);
+    setView('entrees'); // Switch to entrees view
   };
 
   const handleContinueToCart = () => {
     setCartItems((prevCartItems) => [
       ...prevCartItems,
       {
-        menuItem: selectedMenuItem.name,  // Track the selected menu item
-        entrees: selectedEntrees,          // Ensure selected entrees are in an array
-        sides: selectedSides,              // Ensure selected sides are in an array
+        menuItem: selectedMenuItem,
+        entrees: selectedEntrees,
+        sides: selectedSides,
       },
     ]);
-    setSelectedEntrees([]); // Reset selected entrees
-    setSelectedSides([]);   // Reset selected sides
-    setView('cart');        // Switch to cart view
+    setSelectedEntrees([]); // Reset entrees for the next item
+    setSelectedSides([]);   // Reset sides for the next item
+    setView('cart'); // Switch to cart view
   };
 
   const handleSelectEntrees = (selected) => {
-    setSelectedEntrees(selected); // Update selected entrees
+    setSelectedEntrees(selected);
   };
 
   return (
     <div className="navbar-container">
-      <CashierNavbar /> 
+      <CashierNavbar />
       <div className="menu-page">
         {setShowSidebar && (
           <div className="menu-sidebar">
             <h2>Menu Items</h2>
             <div className="menu-items-scroll">
               {menuItems.map((item, index) => (
-                <MenuItem 
-                  key={index} 
-                  name={item.name} 
-                  description={item.description} 
-                  image={item.image} 
-                  onClick={() => handleMenuItemClick(item)} 
+                <MenuItem
+                  key={index}
+                  name={item.name}
+                  description={item.description}
+                  image={item.image}
+                  onClick={() => handleMenuItemClick(item)}
                   isSelected={selectedMenuItem && selectedMenuItem.name === item.name}
                 />
               ))}
@@ -84,25 +84,25 @@ function CashierMenuPage({ setShowSidebar }) {
           {selectedMenuItem ? (
             <div>
               {view === 'sides' && (
-                <SideChoices 
-                  sides={sides} 
+                <SideChoices
+                  sides={sides}
                   maxSides={selectedMenuItem.maxSides}
-                  onContinue={handleContinueToEntrees} // Pass continue handler for sides
+                  onContinue={handleContinueToEntrees}
                 />
               )}
               {view === 'entrees' && (
-                <EntreeChoices 
-                  entrees={entrees} 
+                <EntreeChoices
+                  entrees={entrees}
                   maxEntrees={selectedMenuItem.maxEntrees}
-                  selectedEntrees={selectedEntrees} // Pass selected entrees
-                  onSelectEntrees={handleSelectEntrees} // Correct function name
-                  onContinue={handleContinueToCart} // Pass continue handler for entrees
+                  selectedEntrees={selectedEntrees}
+                  onSelectEntrees={handleSelectEntrees}
+                  onContinue={handleContinueToCart}
                 />
               )}
               {view === 'cart' && (
-                <Cart 
-                  cartItems={cartItems} 
-                  onContinue={() => console.log('Proceeding to checkout')} 
+                <Cart
+                  cartItems={cartItems}
+                  onContinue={() => console.log('Proceeding to checkout')}
                 />
               )}
             </div>
@@ -115,4 +115,4 @@ function CashierMenuPage({ setShowSidebar }) {
   );
 }
 
-export default CashierMenuPage;
+export default CashierOrderPage;
