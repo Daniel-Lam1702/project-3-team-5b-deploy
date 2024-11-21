@@ -117,29 +117,27 @@ function MenuPage() {
           <div className="menu-items-scroll">
             {displayOnlyMenuItems.map((item, index) => (
               <MenuItem
-                key={index + item.name}
-                menuItem={item}
+                key={index + item.name}                
+                name={item.name}
+                description={item.description}
+                image={item.image}
                 onClick={() => handleMenuItemClick(item)}
+                isSelected={selectedMenuItem?.menuItem?.name === item.name}
               />
             ))}
           </div>
         </div>
 
-        <div className="menu-detail">
+        <div className="menu-main-content">
           {view === "cart" && <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />}
           {view === "checkout" && <Checkout cartItems={cartItems} onBack={() => setView("cart")} />}
-          {view === "side" && (
-            <MenuChoices choices={displayOnlyItemComponents.get("side")} category="side" onClick={onContinue} />
-          )}
-          {view === "entrees" && (
-            <MenuChoices choices={displayOnlyItemComponents.get("entrees")} category="entrees" onClick={onContinue} />
-          )}
-          {view === "drink" && (
-            <MenuChoices choices={displayOnlyItemComponents.get("drink")} category="drink" onClick={onContinue} />
-          )}
-          {view === "appetizer" && (
-            <MenuChoices choices={displayOnlyItemComponents.get("appetizer")} category="appetizer" onClick={onContinue} />
-          )}
+          {view !== "checkout" && view !== "cart" &&             
+          <MenuChoices
+              onContinue={onContinue}
+              view={view}
+              menuItemSelection={selectedMenuItem}
+              itemComponents={displayOnlyItemComponents}
+            />}
         </div>
       </div>
     </div>
