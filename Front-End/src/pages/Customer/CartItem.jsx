@@ -2,14 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const CartItem = ({ item }) => {
-  const renderSides = (sides) => {
-    if (Array.isArray(sides)) {
-      return sides.map((side, index) => (
-        <span key={index}>{side.name || side}</span> // Handle both object and string cases
-      )).reduce((prev, curr, index) => {
-        // Join sides with a comma, excluding the last one
-        return index === sides.length - 1 ? [prev, curr] : [prev, curr + ', '];
-      }, []);
+  const renderItems = (items) => {
+    if (Array.isArray(items)) {
+      return items.map(item => item.name).join(', ');
     }
     return null;
   };
@@ -17,25 +12,25 @@ const CartItem = ({ item }) => {
   return (
     <div className="cart-item">
       <h4>{item.menuItem.name}</h4>
-      {item.sides && (
+      {item.side && (
         <div className="sides">
           <strong>Sides: </strong>
-          {renderSides(item.sides)}
+          {renderItems(item.side)}
         </div>
       )}
       {item.entrees && (
         <div className="entrees">
-          <strong>Entrees: </strong>{item.entrees.join(', ')}
+          <strong>Entrees: </strong>{renderItems(item.entrees)}
         </div>
       )}
       {item.drink && (
         <div className="drink">
-          <strong>Drink: </strong>{item.drink.join(', ')}
+          <strong>Drink: </strong>{renderItems(item.drink)}
         </div>
       )}
       {item.appetizer && (
         <div className="appetizer">
-          <strong>Appetizer: </strong>{item.appetizer.join(', ')}
+          <strong>Appetizer: </strong>{renderItems(item.appetizer)}
         </div>
       )}
     </div>
@@ -47,7 +42,7 @@ CartItem.propTypes = {
     menuItem: PropTypes.shape({
       name: PropTypes.string.isRequired,
     }).isRequired,
-    sides: PropTypes.oneOfType([ 
+    side: PropTypes.oneOfType([ 
       PropTypes.arrayOf(PropTypes.string),
       PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string,
