@@ -1,0 +1,28 @@
+.checkout {
+    padding: 20px;
+}
+
+.payment-options button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.payment-options .selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.payment-form {
+    margin-top: 20px;
+}
+
+.checkout-buttons {
+    margin-top: 20px;
+}
+
+.checkout-buttons button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

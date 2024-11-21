@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import { useFetchData } from '../../api/useFetchData';
 import MenuChoices from '../../components/MenuPage/MenuChoices';
 import Cart from './Cart';
+import Checkout from './Checkout';
 
 /**
  * MenuPage component for displaying and managing the menu selection interface.
@@ -87,7 +88,7 @@ function MenuPage() {
   };
 
   const onCheckout = () => {
-    console.log('Proceeding to checkout', cartItems);
+    setView('checkout'); // Set view to checkout
   };
 
   // Clear cart function to reset cart items
@@ -126,6 +127,7 @@ function MenuPage() {
 
         <div className="menu-detail">
           {view === "cart" && <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />}
+          {view === "checkout" && <Checkout cartItems={cartItems} onBack={() => setView("cart")} />}
           {view === "side" && (
             <MenuChoices choices={displayOnlyItemComponents.get("side")} category="side" onClick={onContinue} />
           )}
