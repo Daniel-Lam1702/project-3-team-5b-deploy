@@ -13,27 +13,45 @@ import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
 import GoogleTranslate from './pages/Translation/GoogleTranslate';
+import { MagnificationProvider } from './components/MagnificationContext';
+import MagnificationToggle from './components/MagnificationToggle';
 
-function App() {
+function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
 
   return (
-    <Router>
-      <GoogleTranslate/>
+    <div>
+      <GoogleTranslate />
+      <MagnificationToggle /> {}
+      
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
         <Route path="/cashier" element={<CashierHome />} />
         <Route path="/" element={<Login />} />
-        <Route path="/menu" element={<MenuPage/>} />
+        <Route path="/menu" element={<MenuPage />} />
         <Route path="/menu-board" element={<MenuBoard />} />
-        <Route path="/cart" element={<Cart/>}/>
-        <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}/>
+        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/cashier-order-page"
+          element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
+        />
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
       </Routes>
-    </Router>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <MagnificationProvider>
+      <Router>
+        <AppContent />
+
+      </Router>
+    </MagnificationProvider>
   );
 }
 
