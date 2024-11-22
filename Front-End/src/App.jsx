@@ -36,9 +36,9 @@ function AppContent() {
   };
 
   return (
-    <Router>
+    <div> {/* Add a wrapper div here */}
       <GoogleTranslate />
-      <MagnificationToggle /> {}
+      <MagnificationToggle />
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
@@ -64,9 +64,10 @@ function AppContent() {
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
       </Routes>
-    </div>
+    </div> // Closing the wrapper div
   );
 }
+
 
 function App() {
   return (
