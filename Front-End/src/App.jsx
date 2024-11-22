@@ -18,24 +18,48 @@ import MagnificationToggle from './components/MagnificationToggle';
 
 function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
+  const [cartItems, setCartItems] = useState([]); // Shared cart state
+
+  // Function to add an item to the cart
+  const addToCart = (item) => {
+    setCartItems((prevCartItems) => [...prevCartItems, item]);
+  };
+
+  // Function to remove an item from the cart
+  const removeFromCart = (index) => {
+    setCartItems((prevCartItems) => prevCartItems.filter((_, i) => i !== index));
+  };
+
+  // Function to clear the cart
+  const clearCart = () => {
+    setCartItems([]);
+  };
 
   return (
-    <div>
+    <Router>
       <GoogleTranslate />
       <MagnificationToggle /> {}
-      
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
         <Route path="/cashier" element={<CashierHome />} />
         <Route path="/" element={<Login />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/menu-board" element={<MenuBoard />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route
-          path="/cashier-order-page"
-          element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />}
+        <Route 
+          path="/menu" 
+          element={<MenuPage addToCart={addToCart} />} // Pass addToCart function
         />
+        <Route path="/menu-board" element={<MenuBoard />} />
+        <Route 
+          path="/cart" 
+          element={
+            <Cart 
+              cartItems={cartItems} 
+              removeFromCart={removeFromCart} 
+              clearCart={clearCart} 
+            />
+          } // Pass cart state and management functions
+        />
+        <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
