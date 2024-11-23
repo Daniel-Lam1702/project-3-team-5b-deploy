@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function LandingPageButton({ label, Icon, style, onClick }) {
+function LandingPageButton({ label, Icon, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="landing-page-button p-8 rounded-lg flex justify-center items-center gap-8"
-      style={{ backgroundColor: style.buttonBackground }}
+      className="landing-page-button bg-black text-white p-8 rounded-lg flex justify-center items-center gap-8"
     >
-      {Icon && <Icon style={{ color: style.textColor }} />}
-      <h2 style={{ color: style.textColor }}>{label}</h2>
+      {Icon && <Icon />}
+      <h2 className='text-white' >{label}</h2>
     </button>
   );
 }
@@ -17,11 +16,7 @@ function LandingPageButton({ label, Icon, style, onClick }) {
 // Define prop types for LandingPageButton
 LandingPageButton.propTypes = {
   label: PropTypes.string.isRequired,
-  Icon: PropTypes.elementType, // Icon component
-  style: PropTypes.shape({
-    buttonBackground: PropTypes.string,
-    textColor: PropTypes.string,
-  }).isRequired,
+  Icon: PropTypes.elementType,
   onClick: PropTypes.func.isRequired,
 };
 

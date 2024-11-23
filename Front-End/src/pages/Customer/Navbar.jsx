@@ -1,12 +1,16 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './Navbar.css';
+import { AccessibilityButton } from '../../components/Accessibility/AccessibilityButton';
 
 const Navbar = () => {
     return (
       <nav className="navbar">
         <ul>
-        <li className="left">
+          <li>
+            <AccessibilityButton/>
+          </li>
+          <li className="left">
               <Link to="/customer">Back</Link>
             </li>
             <li className="left">

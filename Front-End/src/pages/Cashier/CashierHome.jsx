@@ -33,24 +33,22 @@ function CashierHome() {
       <div className='flex justify-center items-center'>
         <button
           className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
-          style={{ backgroundColor: style.buttonBackground }}
           onClick={handleStartOrder}
         >
-          <AddShoppingCartIcon className="shopping-cart" style={{ color: style.textColor }} />
-          <h1 style={{ color: style.textColor }}>TAKE ORDER</h1>
+          <AddShoppingCartIcon className="shopping-cart" />
+          <h1>TAKE ORDER</h1>
         </button>
       </div>
       <div className='flex justify-center items-center '>
         <ul className='grid grid-cols-1 gap-10'>
             <li>
-              <LandingPageButton label='Change User' style={style} onClick={() => {}} />
+              <LandingPageButton label='Change User' onClick={() => {}} />
             </li>
             <li>
               <button
                 className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
-                style={{ backgroundColor: style.buttonBackground }}
                 >
-                <h1 style={{ color: style.textColor }}>Clock In/Out</h1>
+                <h1>Clock In/Out</h1>
               </button>
             </li>
           </ul>

@@ -2,8 +2,7 @@
 import React, { useContext } from 'react';
 import { MagnificationContext } from './MagnificationContext'; 
 
-function MagnificationToggle() {
-  const { isMagnified, toggleMagnification } = useContext(MagnificationContext); 
+function MagnificationToggle({isMagnified, toggleMagnification}) {
 
   return (
     <button className="magnification-toggle" onClick={toggleMagnification}>

@@ -110,7 +110,7 @@ function MenuPage() {
 
   return (
     <div className="navbar-container">
-      <Navbar />
+      <Navbar backLink={"/customer"}/>
       <div className="menu-page">
         <div className="menu-sidebar">
           <h2>Menu Items</h2>
