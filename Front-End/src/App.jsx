@@ -12,9 +12,8 @@ import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
-import GoogleTranslate from './pages/Translation/GoogleTranslate';
 
-function App() {
+function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [cartItems, setCartItems] = useState([]); // Shared cart state
 
@@ -34,8 +33,7 @@ function App() {
   };
 
   return (
-    <Router>
-      <GoogleTranslate />
+    <div> {/* Add a wrapper div here */}
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
@@ -61,6 +59,15 @@ function App() {
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
       </Routes>
+    </div>
+  );
+}
+
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

@@ -1,3 +1,99 @@
+/* Apply magnification to all text elements when magnified */
+.magnified {
+  font-size: 1.5em; /* This will increase the font size for everything inside the div */
+}
+
+
+/* App.css */
+body.magnified, 
+html.magnified {
+  font-size: 1.5em; /* Increases base font size */
+}
+
+body.magnified * {
+  font-size: inherit; /* Ensures child elements inherit the magnified font size */
+}
+
+/* Ensure all text respects the magnification */
+body.magnified h1, body.magnified p, body.magnified span {
+  font-size: inherit;
+}
+
+
+html, body {
+  font-size: 1em; /* Default base font size */
+}
+
+.magnified {
+  font-size: 1.5em; /* Magnify globally */
+}
+
+.magnified * {
+  font-size: inherit; /* Ensure child elements scale */
+}
+
+/* Define variables for high-contrast mode */
+.high-contrast {
+  --background-color: #000000;
+  --foreground-color: #faf0e6;
+  --primary-color: rgb(0, 0, 39);
+  --accent-color: #860404;
+  --selected-background: #37f331;
+  --selected-text-color: #ffffff;
+}
+
+/* Apply variables */
+.high-contrast {
+  background-color: var(--background-color);
+}
+
+.high-contrast button, 
+.high-contrast .menu-board-container h2, 
+.high-contrast .start-order-button *, 
+.high-contrast .menu-item, 
+.high-contrast .weather-panel, 
+.high-contrast .accessibility-button .icon, 
+.high-contrast .translate-button {
+  background-color: var(--foreground-color);
+  color: var(--primary-color);
+}
+
+.high-contrast h2, 
+.high-contrast .menu-item * {
+  color: var(--primary-color);
+}
+
+.high-contrast .cart h2, 
+.high-contrast .cart-items-list * {
+  color: var(--primary-color);
+}
+
+.high-contrast .menu-main-content, 
+.high-contrast .menu-choices {
+  background-color: var(--foreground-color);
+}
+
+.high-contrast .cart-buttons button, 
+.high-contrast .choices-list button {
+  background-color: var(--primary-color);
+  color: var(--foreground-color);
+}
+
+.high-contrast .menu-sidebar h2, 
+.high-contrast .manage-stuff-page h1 {
+  color: var(--foreground-color);
+}
+
+.high-contrast .choice-item.selected {
+  background-color: var(--accent-color);
+}
+
+.high-contrast .menu-item.selected {
+  background-color: var(--selected-background);
+  color: var(--selected-text-color);
+}
+
+/* Other styles */
 #root {
   width: 100%;
   min-height: 100vh;
@@ -10,4 +106,9 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: local;
+}
+
+.accessibility-button .icon {
+  font-size: 60px;
+  color: white;
 }
