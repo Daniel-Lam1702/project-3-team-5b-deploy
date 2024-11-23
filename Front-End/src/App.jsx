@@ -13,8 +13,10 @@ import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
 import GoogleTranslate from './pages/Translation/GoogleTranslate';
+import { MagnificationProvider } from './components/MagnificationContext';
+import MagnificationToggle from './components/MagnificationToggle';
 
-function App() {
+function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
   const [cartItems, setCartItems] = useState([]); // Shared cart state
 
@@ -34,8 +36,9 @@ function App() {
   };
 
   return (
-    <Router>
+    <div> {/* Add a wrapper div here */}
       <GoogleTranslate />
+      <MagnificationToggle />
       <Routes>
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
@@ -61,7 +64,19 @@ function App() {
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
       </Routes>
-    </Router>
+    </div> // Closing the wrapper div
+  );
+}
+
+
+function App() {
+  return (
+    <MagnificationProvider>
+      <Router>
+        <AppContent />
+
+      </Router>
+    </MagnificationProvider>
   );
 }
 

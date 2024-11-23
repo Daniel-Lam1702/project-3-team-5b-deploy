@@ -1,3 +1,39 @@
+/* Apply magnification to all text elements when magnified */
+.magnified {
+  font-size: 1.5em; /* This will increase the font size for everything inside the div */
+}
+
+
+/* App.css */
+body.magnified, 
+html.magnified {
+  font-size: 1.5em; /* Increases base font size */
+}
+
+body.magnified * {
+  font-size: inherit; /* Ensures child elements inherit the magnified font size */
+}
+
+/* Ensure all text respects the magnification */
+body.magnified h1, body.magnified p, body.magnified span {
+  font-size: inherit;
+}
+
+
+html, body {
+  font-size: 1em; /* Default base font size */
+}
+
+.magnified {
+  font-size: 1.5em; /* Magnify globally */
+}
+
+.magnified * {
+  font-size: inherit; /* Ensure child elements scale */
+}
+
+
+/* Other styles */
 #root {
   width: 100%;
   min-height: 100vh;
@@ -10,4 +46,21 @@
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: local;
+}
+
+.magnification-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.magnification-toggle:hover {
+  background-color: #0056b3;
 }
