@@ -22,6 +22,25 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
     const [title, setTitle] = useState("");
     /** @type {Array} State to manage the list of item components to display */
     const [displayItemComponents, setDisplayItemComponents] = useState([]);
+    const [isSelected, setIsSelected] = useState(true);
+
+    const showAllergens = (itemComponent) => {
+        if(itemComponent.allergens.length > 0)
+        {
+            let allergenMessage = "This item contains the following allergens: ";
+            for(let i = 0; i < itemComponent.allergens.length; i++)
+            {
+                if(itemComponent.allergens[i] == "")
+                    return;
+                if(i == itemComponent.allergens.length - 1 && itemComponent.allergens.length > 1)
+                    allergenMessage += " and ";
+                allergenMessage += itemComponent.allergens[i];
+                if(i != itemComponent.allergens.length - 1 && i != itemComponent.allergens.length - 2)
+                    allergenMessage += ", ";
+            }
+            alert(allergenMessage);
+        }
+    };
     /**
      * useEffect hook to set max number of choices, title, and displayed items based on the current view.
      */
@@ -67,6 +86,9 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
      * @param {Object} menuChoice - The menu choice to be toggled.
      */
     const toggleMenuChoice = (menuChoice) => {
+        if(isSelected)
+            showAllergens(menuChoice);
+        setIsSelected(prevState => !prevState);
         setSelectedMenuChoices((prevChoices) => {
             if (prevChoices.includes(menuChoice)) {
                 return prevChoices.filter(choice => choice.name !== menuChoice.name);
@@ -81,6 +103,7 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
      * Handles the click event for the continue button.
      */
     const handleContinue = () => {
+        setIsSelected(true);
         if (selectedMenuChoices.length > 0) {
             onContinue(selectedMenuChoices);
             setSelectedMenuChoices([]);
@@ -98,16 +121,16 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
             <div className="choices-list">
                 {displayItemComponents?.map((itemComponent, index) => (
                     <button 
-                    key={index} 
-                    className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
-                    onClick={() => toggleMenuChoice(itemComponent)} 
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleMenuChoice(itemComponent); }}
-                    aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
-                    type="button"
-                >
-                    <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
-                    <h3>{itemComponent.name}</h3>
-                </button>
+                        key={index} 
+                        className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
+                        onClick={() => toggleMenuChoice(itemComponent)} 
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleMenuChoice(itemComponent); }}
+                        aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
+                        type="button"
+                    >
+                        <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
+                        <h3>{itemComponent.name}</h3>
+                    </button>
                 ))}
             </div>
             <button 

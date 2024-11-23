@@ -61,7 +61,7 @@ function MenuPage() {
     else if (item.hasdrink) setView('drink');
     else if (!item.maxsides && !item.maxentrees && !item.hasdrink) setView('appetizer');
     else setView('cart');
-    setPopupVisible(true);
+    //setPopupVisible(true);
   };
 
   const onContinue = (menuChoice) => {
@@ -142,7 +142,7 @@ function MenuPage() {
             />}
         </div>
       </div>
-      <div>
+      {/*<div>
         {isPopupVisible && (
           <div style={styles.popup}>
             <div style={styles.popupContent}>
@@ -153,7 +153,7 @@ function MenuPage() {
             </div>
           </div>
         )}
-    </div>
+      </div>*/}
     </div>
   );
 }
