@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.menu-board-container header {
+  background-color: #7b112c;
+}
+
 .back-button {
   position: absolute;
   top: 0px;
