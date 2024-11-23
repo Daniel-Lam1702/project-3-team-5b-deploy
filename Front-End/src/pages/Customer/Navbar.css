@@ -3,9 +3,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
 }
-.icon {
-    color: white;
-    font-size: 64px !important;
+
+.navbar a{
+    font-size: 20px;
 }
