@@ -61,7 +61,6 @@ function MenuPage() {
     else if (item.hasdrink) setView('drink');
     else if (!item.maxsides && !item.maxentrees && !item.hasdrink) setView('appetizer');
     else setView('cart');
-    //setPopupVisible(true);
   };
 
   const onContinue = (menuChoice) => {
@@ -142,18 +141,6 @@ function MenuPage() {
             />}
         </div>
       </div>
-      {/*<div>
-        {isPopupVisible && (
-          <div style={styles.popup}>
-            <div style={styles.popupContent}>
-              <span style={styles.closeBtn} onClick={hidePopup}>
-                {item.allergens};
-              </span>
-              <p>This is an exit-able pop-up alert!</p>
-            </div>
-          </div>
-        )}
-      </div>*/}
     </div>
   );
 }
