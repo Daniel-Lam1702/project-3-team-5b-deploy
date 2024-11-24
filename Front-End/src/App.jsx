@@ -6,6 +6,7 @@ import Login from './pages/Authentication/Login';
 import MenuPage from './pages/Customer/MenuPage';
 import MenuBoard from './pages/MenuBoard';
 import CashierHome from './pages/Cashier/CashierHome';
+import Employee from './pages/Manager/Employee'
 import './App.css';
 import Cart from './pages/Customer/Cart';
 import CashierMenuPage from './pages/Cashier/CashierOrderPage';
@@ -43,6 +44,7 @@ function AppContent() {
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
         <Route path="/cashier" element={<CashierHome />} />
+        <Route path="/employee" element={<Employee />} />
         <Route path="/" element={<Login />} />
         <Route 
           path="/menu" 
