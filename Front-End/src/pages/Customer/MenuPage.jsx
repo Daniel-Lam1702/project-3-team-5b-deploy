@@ -16,6 +16,7 @@ function MenuPage() {
   const [selectedMenuItem, setSelectedMenuItem] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [view, setView] = useState("");
+  const [isPopupVisible, setPopupVisible] = useState(false);
 
   // Fetch menu items and item components
   const { data: menuItems, loading: menuItemsLoading, error: menuItemsError } = useFetchData('menu-items');
