@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import './EmployeeCSS.css';
 
-function EmployeePage() {
+function Employee() {
   const [employees, setEmployees] = useState([]);
   const [formData, setFormData] = useState({ name: '', hours_worked: '', password: '', manager_id: '' });
   const [editId, setEditId] = useState(null);
-
+  const baseUrl = window.location.hostname === 'localhost'
+  ? 'http://localhost:5000'
+  : import.meta.env.VITE_POS_API_BASE_URL;
   // Fetch employees on component mount
   useEffect(() => {
     fetchEmployees();
@@ -12,7 +15,7 @@ function EmployeePage() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('http://localhost:3000/my-api/employee');
+      const response = await fetch(`${baseUrl}/api/employees`);
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -27,8 +30,8 @@ function EmployeePage() {
     e.preventDefault();
     try {
       const url = editId
-        ? `http://localhost:3000/my-api/employee/${editId}`
-        : 'http://localhost:3000/my-api/employee';
+        ? `${baseUrl}/api/employees/${editId}`
+        : `${baseUrl}/api/employees`;
 
       const method = editId ? 'PUT' : 'POST';
 
@@ -53,7 +56,7 @@ function EmployeePage() {
 
   const handleDeleteEmployee = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/my-api/employee/${id}`, {
+      const response = await fetch(`${baseUrl}/api/employees/${id}`, {
         method: 'DELETE',
       });
 
@@ -78,11 +81,11 @@ function EmployeePage() {
   };
 
   return (
-    <div>
+    <div className="employee">
       <h1>Employee Management</h1>
 
       {/* Employee Table */}
-      <table border="1" style={{ width: '100%', marginBottom: '20px' }}>
+      <table className="employee-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -102,8 +105,12 @@ function EmployeePage() {
               <td>{employee.password}</td>
               <td>{employee.manager_id}</td>
               <td>
-                <button onClick={() => handleEditClick(employee)}>Edit</button>
-                <button onClick={() => handleDeleteEmployee(employee.id)}>Delete</button>
+                <button className="edit-btn" onClick={() => handleEditClick(employee)}>
+                  Edit
+                </button>
+                <button className="delete-btn" onClick={() => handleDeleteEmployee(employee.id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
@@ -112,7 +119,7 @@ function EmployeePage() {
 
       {/* Add/Edit Employee Form */}
       <h2>{editId ? 'Edit Employee' : 'Add Employee'}</h2>
-      <form onSubmit={handleAddOrEditEmployee}>
+      <form className="employee-form" onSubmit={handleAddOrEditEmployee}>
         <div>
           <label>
             Name:
@@ -158,10 +165,12 @@ function EmployeePage() {
             />
           </label>
         </div>
-        <button type="submit">{editId ? 'Save Changes' : 'Add Employee'}</button>
+        <button type="submit" className="submit-btn">
+          {editId ? 'Save Changes' : 'Add Employee'}
+        </button>
       </form>
     </div>
   );
 }
 
-export default EmployeePage;
+export default Employee;

@@ -20,7 +20,7 @@ app.get('/my-api/employee', async (req, res) => {
     }
 });
 
-app.post('/my-api/employee', (req, res) => {
+app.post('/api/employee', (req, res) => {
     const newEmployee = {
         id: employees.length + 1,
         name: req.body.name,

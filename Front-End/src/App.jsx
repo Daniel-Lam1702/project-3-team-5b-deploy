@@ -40,7 +40,6 @@ function AppContent() {
         <Route path="/manager" element={<ManagerHome />} />
         <Route path="/customer" element={<CustomerHome />} />
         <Route path="/cashier" element={<CashierHome />} />
-        <Route path="/employee" element={<Employee />} />
         <Route path="/" element={<Login />} />
         <Route 
           path="/menu" 
@@ -59,6 +58,7 @@ function AppContent() {
         />
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path='/manage-stuff/menu-home' element={<ManagerMenuHome/>}/>
+        <Route path="/manage-stuff/employee" element={<Employee />} />
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
