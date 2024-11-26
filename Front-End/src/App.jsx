@@ -14,6 +14,7 @@ import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
 import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
+import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
 
 function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -57,7 +58,8 @@ function AppContent() {
           } // Pass cart state and management functions
         />
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
-        <Route path='/manage-stuff/menu-home' element={<ManagerMenuHome/>}/>
+        <Route path='/manage-stuff/menu/menu-items' element={<ManagerMenuItems/>}/>
+        <Route path='/manage-stuff/menu' element={<ManagerMenuHome/>}/>
         <Route path="/manage-stuff/employee" element={<Employee />} />
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />

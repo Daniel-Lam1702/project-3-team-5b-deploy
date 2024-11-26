@@ -1,0 +1,18 @@
+.high-contrast .plus {
+    background-color: green;
+    color: white;
+}
+.high-contrast .minus {
+    background-color: red;
+    color: white;
+}
+.high-contrast .edit-container{
+    background-color: darkblue;
+}
+.high-contrast .edit-container h2, 
+.high-contrast .edit-container .MuiFormControl-root *{
+    color: white;
+}
+.high-contrast input {
+    color: white;
+}

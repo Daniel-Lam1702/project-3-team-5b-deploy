@@ -88,7 +88,7 @@ app.delete('/api/employees/:id', async (req, res) => {
 // Menu Items
 app.get('/api/menu-items', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM menu_item');
+        const result = await pool.query('SELECT * FROM menu_item ORDER BY id;');
         res.json(result.rows);
     } catch (error) {
         console.error('Database query error:', error);
@@ -164,6 +164,29 @@ app.get('/api/item-components', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+// Image deletion
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
+
+app.post('/api/delete-image', async (req, res) => {
+    const { public_id } = req.body;
+
+    try {
+        const result = await cloudinary.uploader.destroy(public_id);
+        res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error("Error deleting image:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 
 // Start the server
 app.listen(PORT, () => {
