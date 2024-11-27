@@ -165,6 +165,18 @@ app.get('/api/item-components', async (req, res) => {
     }
 });
 
+// Inventory
+app.get('/api/inventory', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM inventory');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
 // Image deletion
 const cloudinary = require('cloudinary').v2;
 
