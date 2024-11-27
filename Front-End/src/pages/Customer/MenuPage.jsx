@@ -16,6 +16,7 @@ function MenuPage() {
   const [selectedMenuItem, setSelectedMenuItem] = useState({});
   const [cartItems, setCartItems] = useState([]);
   const [view, setView] = useState("");
+  const [isPopupVisible, setPopupVisible] = useState(false);
 
   // Fetch menu items and item components
   const { data: menuItems, loading: menuItemsLoading, error: menuItemsError } = useFetchData('menu-items');
@@ -110,7 +111,7 @@ function MenuPage() {
 
   return (
     <div className="navbar-container">
-      <Navbar />
+      <Navbar backLink={"/customer"}/>
       <div className="menu-page">
         <div className="menu-sidebar">
           <h2>Menu Items</h2>

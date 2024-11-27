@@ -1,0 +1,32 @@
+#root.manager-menu-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#root.manager-menu-home .manager-menu-home-container {
+    background-color: #7b112b;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    padding: 50px;
+    padding-top: 0px;
+}
+
+#root.manager-menu-home .manager-menu-home-options {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    align-items: center;
+}
+
+.high-contrast #root.manager-menu-home .manager-menu-home-container h2 {
+    color: white;
+}
+
+.magnified #root.manager-menu-home .manager-menu-home-container h2,
+.magnified #root.manager-menu-home .manager-menu-home-container button{
+    font-size: 100px;
+}

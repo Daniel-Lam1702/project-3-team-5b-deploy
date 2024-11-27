@@ -1,0 +1,70 @@
+.accessibility-panel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(143, 125, 125, 0.811);
+    left: 0;
+    top: 0;
+    z-index: 20;
+}
+.accessibility-panel ul {
+    align-items: center;
+}
+.close-button {
+    font-size: 40px;
+    color: black;
+    justify-self: right;
+}
+
+.close-button:hover{
+    font-size: 50px;
+    color: rgb(184, 6, 6);
+}
+
+/*Translation Styling*/
+/* Hide Google branding */
+.goog-te-gadget > *:not(:first-child) {
+    display: none !important;
+}
+
+#google-translate select {
+    font-size: 36px;
+    padding: 5px;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.translate-button {
+    color: white;
+    background-color: #000;
+    width: fit-content;
+    align-items: center;
+    padding: 20px;
+    gap: 50px;
+    border-radius: 10px;
+}
+
+.translate-icon {
+    font-size: 100px !important;
+}
+/* Magnification styling*/
+.magnification-toggle {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 100px;
+}
+
+.magnification-toggle:hover {
+  background-color: #0056b3;
+}
+
+.high-contrast .accessibility-panel {
+    background-color: rgba(0, 0, 0, 0.811);
+    
+}

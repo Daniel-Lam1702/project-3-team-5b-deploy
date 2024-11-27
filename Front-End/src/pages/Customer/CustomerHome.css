@@ -20,6 +20,11 @@
     font-size: 5rem;
 }
 
+.start-order-button{
+    color: #FFFFFF;
+    background-color: #000000;
+}
+
 /* Magnification scaling */
 .magnified .start-order-button h1 {
     font-size: 3rem; 
