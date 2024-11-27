@@ -1,0 +1,24 @@
+.high-contrast h1 {
+    color: white;
+}
+.high-contrast .edit-button, .high-contrast .add-button{
+    background-color: green;
+    color: white;
+}
+.high-contrast .edit-button:hover{
+    background-color: darkgreen;
+}
+.high-contrast .delete-button{
+    background-color: red;
+    color: white;
+}
+.high-contrast .table, .high-contrast .table .MuiDataGrid-columnHeaders *,.high-contrast .table .MuiDataGrid-footerContainer,
+.high-contrast .table .MuiDataGrid-footerContainer .MuiTablePagination-selectLabel,.high-contrast .table .MuiDataGrid-footerContainer .MuiSelect-select,
+.high-contrast .table .MuiDataGrid-footerContainer .MuiTablePagination-selectIcon, .high-contrast .table .MuiDataGrid-footerContainer .MuiTablePagination-displayedRows{
+    background-color: navy;
+    color: white;
+}
+.high-contrast .MuiPaper-root{
+    background-color: navy;
+    color: white;
+}
