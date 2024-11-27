@@ -1,12 +1,80 @@
+/* General page styling */
 .login-page {
-    width: 100%;
-    height: 90vh;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centers everything vertically */
+    height: 100vh; /* Full viewport height */
 
-/* Login.css */
-input::placeholder, input {
-    color: black;
-    font-size: 1.25rem; /* Adjust as needed */
-    font-weight: bold; /* Optional for making it bolder */
-}
+    margin: 0;
+  }
+  
+  /* Buttons container */
+  .buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between the rows */
+    width: 80%; /* Ensures proper scaling for all screen sizes */
+  }
+  
+  /* Top row styling */
+  .top-row {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between the long buttons */
+  }
+  
+  /* Bottom row styling */
+  .bottom-row {
+    display: flex;
+    justify-content: center; /* Aligns buttons centrally in the container */
+    gap: 20px; /* Space between cashier and manager buttons */
+  }
+  
+  /* General button styles */
+  .login-button {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .login-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Long buttons (Top row) */
+  .login-button.long {
+    width: 100%; /* Full width of container */
+  }
+  
+  /* Short buttons (Bottom row) */
+  .login-button.short {
+    width: 50%; /* Buttons take up half the width of the row */
+  }
+  
+  /* Manager button */
+  .login-button.manager {
+    background-color: #007bff; /* Blue */
+    color: white;
+  }
+  
+  .login-button.manager:hover {
+    background-color: #0056b3; /* Darker blue */
+  }
+  
+  /* Cashier button */
+  .login-button.cashier {
+    background-color: #28a745; /* Green */
+    color: white;
+  }
+  
+  .login-button.cashier:hover {
+    background-color: #1e7e34; /* Darker green */
+  }
   
