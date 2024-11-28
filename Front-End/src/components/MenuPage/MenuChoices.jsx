@@ -110,6 +110,15 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
         }
     };
 
+    const handleNutrition = (menuChoice) => {  
+        return (
+            <div>
+                <h1>{menuChoice.name} Nutritional Information</h1>
+                <h2>{menuChoice.serving_size}\n{menuChoice.calories} </h2>
+            </div>
+        )
+    };
+
     // Render fallback message if no menu item selection is available
     if (!menuItemSelection || Object.keys(menuItemSelection).length === 0) {
         return <div className="font-bold text-2xl">Select Menu Item</div>;
@@ -128,6 +137,9 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
                         aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
                         type="button"
                     >
+                        <button onClick={handleNutrition(itemComponent)} className="underline hover:bg-maroon">
+                            Nutrition
+                        </button>
                         <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
                         <h3>{itemComponent.name}</h3>
                     </button>

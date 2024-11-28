@@ -12,6 +12,7 @@ import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
+import OrderHistory from './pages/Manager/OrderHistory';
 
 function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -58,6 +59,7 @@ function AppContent() {
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
+        <Route path="/order-history" element={<OrderHistory/>} />
       </Routes>
     </div>
   );
