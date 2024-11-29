@@ -23,6 +23,8 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
     /** @type {Array} State to manage the list of item components to display */
     const [displayItemComponents, setDisplayItemComponents] = useState([]);
     const [isSelected, setIsSelected] = useState(true);
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [nutritionIndex, setNutritionIndex] = useState(-1);
 
     const showAllergens = (itemComponent) => {
         if(itemComponent.allergens.length > 0)
@@ -41,6 +43,16 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
             alert(allergenMessage);
         }
     };
+
+    const openPopup = (index) => {
+        setNutritionIndex(index);
+        setPopupOpen(true);
+    }
+
+    const closePopup = () => {
+        setPopupOpen(false);
+        setNutritionIndex(-1);
+    }
     /**
      * useEffect hook to set max number of choices, title, and displayed items based on the current view.
      */
@@ -118,19 +130,94 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
     return (
         <div className="menu-choices">
             <h2>{title}</h2>
-            <div className="choices-list">
+            <div className="choices">
                 {displayItemComponents?.map((itemComponent, index) => (
-                    <button 
-                        key={index} 
-                        className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
-                        onClick={() => toggleMenuChoice(itemComponent)} 
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleMenuChoice(itemComponent); }}
-                        aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
-                        type="button"
-                    >
-                        <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
-                        <h3>{itemComponent.name}</h3>
-                    </button>
+                    <div>
+                    <div className="sticky">
+                        <button className="bg-black text-white mt-2 -ml-32 w-64 rounded-xl py-2 z-40 flex-wrap overflow-auto absolute" onClick={() => openPopup(itemComponent.id)}>
+                            Nutrition
+                        </button>
+                        <button 
+                            key={index} 
+                            className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
+                            onClick={() => toggleMenuChoice(itemComponent)} 
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleMenuChoice(itemComponent); }}
+                            aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
+                            type="button"
+                        >
+                            <img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
+                            <h3>{itemComponent.name}</h3>
+                        </button>
+                    </div>   
+                        {popupOpen && nutritionIndex === itemComponent.id && (
+                            <div className="bg-white mt-2">
+                                <h3 className="text-lg"><b>{itemComponent.name} Nutrition</b></h3>
+                                <table className="w-full">
+                                    <tr className="">
+                                        <th className="text-left pl-2">Serving Size</th>
+                                        <td className="text-right pr-2">{itemComponent.serving_size}oz</td>
+                                    </tr>
+                                    <tr className="outline outline-1">
+                                        <th className="text-left pl-2">Calories</th>
+                                        <td className="text-right pr-2">{itemComponent.calories}cal</td>
+                                    </tr>
+                                    {itemComponent.fat_calories != null && (
+                                        <tr>
+                                            <th className="text-left pl-2">Fat Calories</th>
+                                            <td className="text-right pr-2">{itemComponent.fat_calories}cal</td>
+                                        </tr>
+                                    )}
+                                    <tr className="outline outline-1">
+                                        <th className="text-left pl-2">Total Fat</th>
+                                        <td className="text-right pr-2">{itemComponent.total_fat}g</td>
+                                    </tr>
+                                    <tr>
+                                        <th className="text-left pl-2">Saturated Fat</th>
+                                        <td className="text-right pr-2">{itemComponent.saturated_fat}g</td>
+                                    </tr>
+                                    <tr className="outline outline-1">
+                                        <th className="text-left pl-2">Trans Fat</th>
+                                        <td className="text-right pr-2">{itemComponent.trans_fat}g</td>
+                                    </tr>
+                                    {itemComponent.cholesterol != null && (
+                                        <tr>
+                                            <th className="text-left pl-2">Cholesterol</th>
+                                            <td className="text-right pr-2">{itemComponent.cholesterol}mg</td>
+                                        </tr>
+                                    )}
+                                    {itemComponent.sodium != null && (
+                                        <tr className="outline outline-1">
+                                            <th className="text-left pl-2">Sodium</th>
+                                            <td className="text-right pr-2">{itemComponent.sodium}mg</td>
+                                        </tr>
+                                    )}
+                                    <tr>
+                                        <th className="text-left pl-2">Carbohydrates</th>
+                                        <td className="text-right pr-2">{itemComponent.carbs}g</td>
+                                    </tr>
+                                    {itemComponent.fiber != null && (
+                                        <tr className="outline outline-1">
+                                            <th className="text-left pl-2">Fiber</th>
+                                            <td className="text-right pr-2">{itemComponent.fiber}g</td>
+                                        </tr>
+                                    )}
+                                    {itemComponent.sugar != null && (
+                                        <tr>
+                                            <th className="text-left pl-2">Sugar</th>
+                                            <td className="text-right pr-2">{itemComponent.sugar}g</td>
+                                        </tr>
+                                    )}
+                                    <tr className="outline outline-1">
+                                        <th className="text-left pl-2">Protein</th>
+                                        <td className="text-right pr-2">{itemComponent.protein}g</td>
+                                    </tr>
+                                </table>
+                                <button className="text-sm bg-black text-white mx-1 w-72 rounded-md" onClick={closePopup}>
+                                    close
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 ))}
             </div>
             <button 
