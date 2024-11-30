@@ -12,9 +12,16 @@
   color: #ffffff;
 }
 
+.choices {
+  height: 80%;
+  display:flex;
+  gap: 30px;
+  margin-bottom: 20px;
+  overflow: auto;
+  flex-wrap: wrap;
+}
 .choices-list {
   height: 80%;
-  overflow: auto;
   display: flex;
   gap: 30px;
   flex-wrap: wrap;
@@ -23,7 +30,10 @@
 }
 
 .choice-item {
-  padding: 10px 15px;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
   background-color: #ffffff; 
   border-radius: 5px;
   cursor: pointer;
@@ -34,6 +44,7 @@
   align-items: center;
   flex-direction: column;
   width: 300px;
+  z-index: 0;
 }
 
 .choice-item h3 {
