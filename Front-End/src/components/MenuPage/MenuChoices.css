@@ -19,7 +19,9 @@
   margin-bottom: 20px;
   overflow: auto;
   flex-wrap: wrap;
+  justify-content: center;
 }
+
 .choices-list {
   height: 80%;
   display: flex;
