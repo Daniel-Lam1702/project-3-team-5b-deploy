@@ -10,6 +10,9 @@ const allowedOrigins = [
     'https://project-3-team-5b.onrender.com',
     'http://localhost:5173'
   ];
+
+const itemComponentsRoutes = require('./my-api/itemComponents');
+
   
 app.use(cors({
     origin: (origin, callback) => {
@@ -175,6 +178,9 @@ app.get('/api/inventory', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+app.use('/api/item-components', itemComponentsRoutes);  // This will handle all /api/item-components routes
+
 
 
 // Image deletion
