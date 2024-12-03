@@ -74,6 +74,9 @@ function ManageStuff() {
       <button className='manage-button' onClick={() => navigate('/manage-stuff/menu')}>
         Menu
       </button>
+      <button className="manage-button" onClick={() => navigate('/manage-stuff/ingredients')}>
+        Ingredients
+      </button>
     </div>
   );
 }
