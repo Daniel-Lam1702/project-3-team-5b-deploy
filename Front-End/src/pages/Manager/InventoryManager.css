@@ -1,0 +1,109 @@
+
+
+/* Add Item Section */
+.add-item-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* Inventory Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+td {
+    background-color: #f9f9f9;
+}
+
+td button {
+    background-color: #f44336;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+td button:hover {
+    background-color: #d32f2f;
+}
+
+th {
+    cursor: pointer;
+    padding: 10px;
+    text-align: left;
+}
+
+th:hover {
+    background-color: #f0f0f0;
+}
+
+th::after {
+    content: '';
+    margin-left: 5px;
+}
+
+th[data-sorted='asc']::after {
+    content: '↑';
+}
+
+th[data-sorted='desc']::after {
+    content: '↓';
+}
+
+
+/* Edit Item Form */
+.edit-item-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.edit-item-form input {
+    margin-bottom: 10px;
+}
+
+/* Edit and Cancel Buttons */
+.edit-item-form button {
+    margin-right: 10px;
+}
+
+/* Back Button Styles */
+.back-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+.back-button:hover {
+    background-color: #45a049;
+}

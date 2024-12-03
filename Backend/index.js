@@ -12,6 +12,7 @@ const allowedOrigins = [
   ];
 
 const itemComponentsRoutes = require('./my-api/itemComponents');
+const inventoryRoutes = require('./my-api/inventory');
 
   
 app.use(cors({
@@ -169,16 +170,7 @@ app.get('/api/item-components', async (req, res) => {
 });
 
 // Inventory
-app.get('/api/inventory', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM inventory');
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Database query error:', error);
-        res.status(500).send('Server error');
-    }
-});
-
+app.use('/api/inventory', inventoryRoutes);
 app.use('/api/item-components', itemComponentsRoutes);  // This will handle all /api/item-components routes
 
 
