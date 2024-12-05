@@ -16,6 +16,7 @@ import Inventory from './pages/Manager/Inventory';
 import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
 import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
 import IngredientsPage from './pages/Manager/IngredientsPage';
+import ManagerMenuChoices from './pages/Manager/menu/ManagerMenuChoices';
 
 function AppContent() {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -60,6 +61,7 @@ function AppContent() {
         />
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path='/manage-stuff/menu/menu-items' element={<ManagerMenuItems/>}/>
+        <Route path='/manage-stuff/menu/menu-choices' element={<ManagerMenuChoices/>}/>
         <Route path='/manage-stuff/menu' element={<ManagerMenuHome/>}/>
         <Route path="/manage-stuff/employee" element={<Employee />} />
         <Route path="/manage-stuff" element={<ManageStuff />} />
