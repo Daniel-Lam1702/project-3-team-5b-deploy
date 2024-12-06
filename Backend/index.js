@@ -157,17 +157,6 @@ app.post('/api/menu-items', async (req, res) => {
     }
 });
 
-// Item Components
-app.get('/api/item-components', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM item_component');
-        res.json(result.rows);
-    } catch (error) {
-        console.error('Database query error:', error);
-        res.status(500).send('Server error');
-    }
-});
-
 // Inventory
 app.get('/api/inventory', async (req, res) => {
     try {
