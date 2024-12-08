@@ -15,7 +15,7 @@ import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
 import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
 import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
-import IngredientsPage from './pages/Manager/IngredientsPage';
+import InventoryManager from './pages/Manager/InventoryManager';
 import ManagerMenuChoices from './pages/Manager/menu/ManagerMenuChoices';
 
 function AppContent() {
@@ -67,7 +67,7 @@ function AppContent() {
         <Route path="/manage-stuff" element={<ManageStuff />} />
         <Route path="/sales" element={<Sales />} />
         <Route path="/inventory" element={<Inventory />} />
-        <Route path="/manage-stuff/ingredients" element={<IngredientsPage />} />
+        <Route path="/manage-stuff/inventory" element={<InventoryManager />} />
       </Routes>
     </div>
   );
