@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for React Router v6
 import './InventoryManager.css'; // Import the CSS file
 
+const baseUrl = window.location.hostname === 'localhost'
+    ? 'http://localhost:5000'
+    : import.meta.env.VITE_POS_API_BASE_URL;
+
 const InventoryManager = () => {
     const navigate = useNavigate(); // Initialize navigate hook
     const [inventory, setInventory] = useState([]);
@@ -12,7 +16,7 @@ const InventoryManager = () => {
     const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' }); // State for sorting configuration
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/inventory')
+        fetch(`${baseUrl}/api/inventory`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -72,7 +76,7 @@ const InventoryManager = () => {
     };
 
     const handleDelete = (id) => {
-        fetch(`http://localhost:5000/api/inventory/${id}`, { method: 'DELETE' })
+        fetch(`${baseUrl}/api/inventory/${id}`, { method: 'DELETE' })
             .then(response => response.json())
             .then(data => {
                 setInventory(inventory.filter(item => item.id !== id));
@@ -95,7 +99,7 @@ const InventoryManager = () => {
             return;
         }
 
-        fetch(`http://localhost:5000/api/inventory/${editingItem.id}`, {
+        fetch(`${baseUrl}/api/inventory/${editingItem.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(editingItem),
@@ -119,7 +123,7 @@ const InventoryManager = () => {
             return;
         }
 
-        fetch('http://localhost:5000/api/inventory', {
+        fetch(`${baseUrl}/api/inventory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(newItem),
