@@ -55,6 +55,10 @@ function ManageStuff() {
   return (
     <div className="manage-stuff-page">
       <h1>Manage Stuff</h1>
+
+      {/* Back Button */}
+      <button onClick={() => navigate('/manager')} className="back-button">Back</button>
+
       {location.latitude && location.longitude ? (
         <Weather location={location} />
       ) : (
@@ -62,6 +66,7 @@ function ManageStuff() {
           Location Access Required For Weather
         </div>
       )}
+
       <button className="manage-button" onClick={() => navigate('/inventory')}>
         Inventory
       </button>
@@ -71,7 +76,7 @@ function ManageStuff() {
       <button className="manage-button" onClick={() => navigate('/manage-stuff/employee')}>
         Employees
       </button>
-      <button className='manage-button' onClick={() => navigate('/manage-stuff/menu')}>
+      <button className="manage-button" onClick={() => navigate('/manage-stuff/menu')}>
         Menu
       </button>
       <button className="manage-button" onClick={() => navigate('/manage-stuff/inventory')}>
