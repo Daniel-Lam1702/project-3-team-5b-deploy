@@ -13,6 +13,7 @@ const allowedOrigins = [
 
 const itemComponentsRoutes = require('./my-api/itemComponents');
 const inventoryRoutes = require('./my-api/inventory');
+const salesRoutes = require('./my-api/sales');
 
   
 app.use(cors({
@@ -162,7 +163,8 @@ app.post('/api/menu-items', async (req, res) => {
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/item-components', itemComponentsRoutes);  // This will handle all /api/item-components routes
 
-
+//Sales
+app.use('/api/sales', salesRoutes);
 
 // Image deletion
 const cloudinary = require('cloudinary').v2;
