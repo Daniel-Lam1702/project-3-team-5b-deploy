@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './EmployeeCSS.css';
 
 /**
@@ -9,9 +10,10 @@ import './EmployeeCSS.css';
  * @returns {JSX.Element} The rendered Employee Management page with a table of employees and a form for adding or editing employees.
  */
 function Employee() {
-  const [employees, setEmployees] = useState([]);  // State for storing employee data
-  const [formData, setFormData] = useState({ name: '', hours_worked: '', password: '', manager_id: '' });  // State for managing form data
-  const [editId, setEditId] = useState(null);  // State for managing the ID of the employee being edited
+  const [employees, setEmployees] = useState([]);
+  const [formData, setFormData] = useState({ name: '', hours_worked: '', password: '', manager_id: '' });
+  const [editId, setEditId] = useState(null);
+  const navigate = useNavigate(); // Initialize the navigate function
   const baseUrl = window.location.hostname === 'localhost'
     ? 'http://localhost:5000'
     : import.meta.env.VITE_POS_API_BASE_URL;  // Determine the base URL based on the environment
@@ -113,6 +115,11 @@ function Employee() {
     <div className="employee">
       <h1>Employee Management</h1>
 
+      {/* Back Button */}
+      <button className="back-button" onClick={() => navigate(-1)}>
+        Back
+      </button>
+
       {/* Employee Table */}
       <table className="employee-table">
         <thead>
@@ -203,3 +210,4 @@ function Employee() {
 }
 
 export default Employee;
+
