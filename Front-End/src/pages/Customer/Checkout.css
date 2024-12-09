@@ -1,5 +1,6 @@
 .checkout {
     padding: 20px;
+    background-color: white;
 }
 
 .payment-options button {
@@ -25,4 +26,28 @@
     margin: 5px;
     padding: 10px 20px;
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+
+}
+
+.checkout-buttons .back-to-cart {
+    background-color: #860404;
+    color: white;
+}
+
+.checkout-buttons .back-to-cart:hover {
+    background-color: #e91313;
+    color: black;
+}
+
+
+.checkout-buttons .place-order {
+    background-color: green;
+    color: white;
+}
+
+.checkout-buttons .place-order:hover {
+    background-color: rgb(1, 183, 1);
+    color: black;
 }

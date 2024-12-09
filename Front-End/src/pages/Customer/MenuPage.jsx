@@ -6,15 +6,36 @@ import Navbar from './Navbar';
 import { useFetchData } from '../../api/useFetchData';
 import MenuChoices from '../../components/MenuPage/MenuChoices';
 import Cart from './Cart';
-import Checkout from './Checkout';
 
 /**
  * MenuPage component for displaying and managing the menu selection interface.
+ * 
+ * This component allows users to browse menu items, select their choices (sides, entrees, drinks, appetizers),
+ * and add items to their cart. It supports interaction with the cart through the provided props.
+ * 
+ * Props:
+ * @param {Array} cartItems - An array of current items in the cart. Each item includes the menu item details, 
+ *                            quantity, and any selected components (e.g., sides, entrees).
+ * @param {Function} setCartItems - A function to update the state of cart items. Used for adding items to the cart.
+ * 
+ * Features:
+ * - Displays menu items fetched from an API.
+ * - Supports selecting components (sides, entrees, drinks, appetizers) based on the menu item's configuration.
+ * - Allows adding selected items to the cart.
+ * - Dynamically updates the cart state with selected items and their details.
+ * 
+ * Example usage:
+ * ```
+ * const [cartItems, setCartItems] = useState([]);
+ * 
+ * return <MenuPage cartItems={cartItems} setCartItems={setCartItems} />;
+ * ```
+ * 
+ * @component
  * @returns {JSX.Element} The MenuPage component.
  */
-function MenuPage() {
+function MenuPage({ cartItems, setCartItems, isCustomer }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState({});
-  const [cartItems, setCartItems] = useState([]);
   const [view, setView] = useState("");
   const [isPopupVisible, setPopupVisible] = useState(false);
 
@@ -54,7 +75,7 @@ function MenuPage() {
 
   // Handle menu item click to set initial view based on item type
   const handleMenuItemClick = (item) => {
-    setSelectedMenuItem({ menuItem: item });
+    setSelectedMenuItem({ menuItem: item, quantity: 1 });
     if (item.name === "A La Carte") setView('A La Carte');
     else if (item.maxsides > 0) setView('side');
     else if (item.maxentrees > 0) setView('entrees');
@@ -74,12 +95,12 @@ function MenuPage() {
     } else if (view === "A La Carte") {
       const isEntree = displayOnlyItemComponents.get('entrees').some(entree => entree.name === menuChoice[0]?.name);
       updatedMenuItem = isEntree ? { ...updatedMenuItem, entrees: menuChoice } : { ...updatedMenuItem, side: menuChoice };
-      setView("checkout");
+      setView("cart");
     } else {
       if (view === "drink") updatedMenuItem.drink = menuChoice;
       else if (view === "appetizer") updatedMenuItem.appetizer = menuChoice;
       else updatedMenuItem.entrees = menuChoice;
-      setView("checkout");
+      setView("cart");
     }
 
     setSelectedMenuItem(updatedMenuItem);
@@ -111,7 +132,7 @@ function MenuPage() {
 
   return (
     <div className="navbar-container">
-      <Navbar backLink={"/customer"}/>
+      {isCustomer && <Navbar backLink={"/customer"}/>}
       <div className="menu-page">
         <div className="menu-sidebar">
           <h2>Menu Items</h2>
@@ -130,10 +151,10 @@ function MenuPage() {
         </div>
 
         <div className="menu-main-content">
-          {view === "cart" && <Cart cartItems={cartItems} onContinue={onCheckout} clearCart={clearCart} />}
-          {view === "checkout" && <Checkout cartItems={cartItems} onBack={() => setView("cart")} />}
-          {view !== "checkout" && view !== "cart" &&             
+          {view === "cart" && <Cart isCustomer={isCustomer} isPage={false} cartItems={cartItems} setCartItems={setCartItems} onContinue={onCheckout} clearCart={clearCart} />}
+          {view !== "cart" &&             
           <MenuChoices
+              isCustomer={isCustomer}
               onContinue={onContinue}
               view={view}
               menuItemSelection={selectedMenuItem}

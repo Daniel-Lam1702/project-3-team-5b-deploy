@@ -46,6 +46,7 @@
   align-items: center;
   flex-direction: column;
   width: 300px;
+  height: 350px;
   z-index: 0;
 }
 
@@ -87,3 +88,12 @@
   height: 250px;
 }
 
+.high-contrast .choice-item, .high-contrast .nutrition-button, .high-contrast .nutrition-close-button {
+  border: 3px solid #000000;
+  border-radius: 4px;
+}
+
+.high-contrast .nutrition-close-button{
+  background-color:maroon;
+  color: white;
+}

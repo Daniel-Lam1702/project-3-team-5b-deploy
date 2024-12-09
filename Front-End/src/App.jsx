@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CustomerHome from './pages/Customer/CustomerHome';
-import ManagerHome from './pages/Manager/ManagerHome';
 import Login from './pages/Authentication/Login';
 import MenuPage from './pages/Customer/MenuPage';
 import MenuBoard from './pages/MenuBoard';
@@ -9,7 +8,6 @@ import CashierHome from './pages/Cashier/CashierHome';
 import Employee from './pages/Manager/Employee';
 import './App.css';
 import Cart from './pages/Customer/Cart';
-import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
@@ -17,6 +15,7 @@ import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
 import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
 import InventoryManager from './pages/Manager/InventoryManager';
 import ManagerMenuChoices from './pages/Manager/menu/ManagerMenuChoices';
+import CashierOrderPage from './pages/Cashier/CashierOrderPage';
 
 /**
  * Main application content component.
@@ -61,26 +60,34 @@ function AppContent() {
   return (
     <div>
       <Routes>
-        <Route path="/manager" element={<ManagerHome />} />
+        
         <Route path="/customer" element={<CustomerHome />} />
         <Route path="/cashier" element={<CashierHome />} />
         <Route path="/" element={<Login />} />
         <Route 
           path="/menu" 
-          element={<MenuPage addToCart={addToCart} />} // Pass addToCart function
+          element={
+            <MenuPage 
+              isCustomer={true}
+              cartItems={cartItems} 
+              setCartItems={setCartItems} // Pass addToCart function
+            />
+          } 
         />
         <Route path="/menu-board" element={<MenuBoard />} />
         <Route 
           path="/cart" 
           element={
             <Cart 
+              isPage={true}
               cartItems={cartItems} 
+              setCartItems={setCartItems}
               removeFromCart={removeFromCart} 
               clearCart={clearCart} 
             />
-          } // Pass cart state and management functions
+          }
         />
-        <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
+        <Route path="/cashier-order-page" element={<CashierOrderPage cartItems={cartItems} setCartItems={setCartItems} showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path='/manage-stuff/menu/menu-items' element={<ManagerMenuItems />} />
         <Route path='/manage-stuff/menu/menu-choices' element={<ManagerMenuChoices />} />
         <Route path='/manage-stuff/menu' element={<ManagerMenuHome />} />

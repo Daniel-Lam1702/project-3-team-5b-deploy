@@ -50,7 +50,7 @@ function CashierHome() {
     <div className="grid grid-cols-2 w-full h-[90vh] gap-4">
       <div className='flex justify-center items-center'>
         <button
-          className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
+          className={`cashier-start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
           onClick={handleStartOrder}
         >
           <AddShoppingCartIcon className="shopping-cart" />
@@ -60,14 +60,7 @@ function CashierHome() {
       <div className='flex justify-center items-center '>
         <ul className='grid grid-cols-1 gap-10'>
             <li>
-              <LandingPageButton label='Change User' onClick={() => {}} />
-            </li>
-            <li>
-              <button
-                className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
-              >
-                <h1>Clock In/Out</h1>
-              </button>
+              <LandingPageButton label='Sign Out' onClick={() => {navigate('/')}} />
             </li>
           </ul>
       </div>
