@@ -16,6 +16,7 @@ import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
 import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
 import InventoryManager from './pages/Manager/InventoryManager';
 import ManagerMenuChoices from './pages/Manager/menu/ManagerMenuChoices';
+import Checkout from './pages/Customer/Checkout';
 
 /**
  * Main application content component.
@@ -66,18 +67,25 @@ function AppContent() {
         <Route path="/" element={<Login />} />
         <Route 
           path="/menu" 
-          element={<MenuPage addToCart={addToCart} />} // Pass addToCart function
+          element={
+            <MenuPage 
+              cartItems={cartItems} 
+              setCartItems={setCartItems} // Pass addToCart function
+            />
+          } 
         />
         <Route path="/menu-board" element={<MenuBoard />} />
         <Route 
           path="/cart" 
           element={
             <Cart 
+              isPage={true}
               cartItems={cartItems} 
+              setCartItems={setCartItems}
               removeFromCart={removeFromCart} 
               clearCart={clearCart} 
             />
-          } // Pass cart state and management functions
+          }
         />
         <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path='/manage-stuff/menu/menu-items' element={<ManagerMenuItems />} />

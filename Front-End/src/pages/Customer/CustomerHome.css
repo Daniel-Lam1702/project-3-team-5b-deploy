@@ -1,10 +1,10 @@
 /* General styles */
-.start-order-button h1 {
+.customer-start-order-button h1 {
     font-size: 2rem;
     font-weight: 500;
 }
 
-.start-order-button .shopping-cart {
+.customer-start-order-button .shopping-cart {
     font-size: 10rem;
 }
 
@@ -20,17 +20,17 @@
     font-size: 5rem;
 }
 
-.start-order-button{
+.customer-start-order-button{
     color: #FFFFFF;
     background-color: #000000;
 }
 
 /* Magnification scaling */
-.magnified .start-order-button h1 {
+.magnified .customer-start-order-button h1 {
     font-size: 3rem; 
 }
 
-.magnified .start-order-button .shopping-cart {
+.magnified .customer-start-order-button .shopping-cart {
     font-size: 15rem; 
 }
 
@@ -46,14 +46,38 @@
     font-size: 7rem;
 }
 
-/* Media query for larger screens */
+
 @media screen and (min-width: 1300px) {
-    .start-order-button h1 {
-        font-size: 3rem;
+    .customer-start-order-button h1 {
+        font-size: 6rem;
         font-weight: 700;
     }
 
-    .start-order-button .shopping-cart {
+    .customer-start-order-button .shopping-cart {
+        font-size: 250px;
+    }
+
+    .landing-page-button {
+        width: 600px;
+    }
+
+    .landing-page-button h2 {
+        font-size: 50px;
+    }
+
+    .landing-page-button svg {
+        font-size: 100px;
+    }
+}
+
+/* Media query for larger screens */
+@media screen and (min-width: 1710px) {
+    .customer-start-order-button h1 {
+        font-size: 8rem;
+        font-weight: 700;
+    }
+
+    .customer-start-order-button .shopping-cart {
         font-size: 12rem;
     }
 
