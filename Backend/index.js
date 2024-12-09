@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware setup
 const allowedOrigins = [
-    'https://project-3-team-5b.onrender.com',
+    'https://main.ddks64gk1t7cw.amplifyapp.com/',
     'http://localhost:5173'
   ];
 
