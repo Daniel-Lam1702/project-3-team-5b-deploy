@@ -45,11 +45,10 @@ function CashierHome() {
               <LandingPageButton label='Change User' onClick={() => {}} />
             </li>
             <li>
-              <button
-                className={`start-order-button w-4/5 h-4/5 p-4 rounded-lg flex flex-col justify-center items-center gap-2`}
-                >
-                <h1>Clock In/Out</h1>
-              </button>
+              <LandingPageButton label='Clock In/Out' onClick={() => {}}/>
+            </li>
+            <li>
+              <LandingPageButton label='Order History' onClick={navigate('/order-history')}/>
             </li>
           </ul>
       </div>
