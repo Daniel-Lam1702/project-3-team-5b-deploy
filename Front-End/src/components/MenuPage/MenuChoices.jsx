@@ -11,7 +11,7 @@ import './MenuChoices.css';
  * @param {function} props.onContinue - Callback function triggered when the continue button is clicked.
  * @returns {JSX.Element} The MenuChoices component.
  */
-export default function MenuChoices({ menuItemSelection, itemComponents, view, onContinue}) {
+export default function MenuChoices({ isCustomer, menuItemSelection, itemComponents, view, onContinue}) {
     /** @type {Array} State to manage the selected menu choices */
     const [selectedMenuChoices, setSelectedMenuChoices] = useState([]);
     /** @type {string} State to manage the label of the action button */
@@ -98,7 +98,7 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
      * @param {Object} menuChoice - The menu choice to be toggled.
      */
     const toggleMenuChoice = (menuChoice) => {
-        if(isSelected)
+        if(isSelected && isCustomer)
             showAllergens(menuChoice);
         setIsSelected(prevState => !prevState);
         setSelectedMenuChoices((prevChoices) => {
@@ -134,9 +134,11 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
                 {displayItemComponents?.map((itemComponent, index) => (
                     <div>
                     <div className="sticky">
-                        <button className="bg-black text-white mt-2 -ml-32 w-64 rounded-xl py-2 z-40 flex-wrap overflow-auto absolute" onClick={() => openPopup(itemComponent.id)}>
+                        {isCustomer && 
+                        <button className="nutrition-button bg-black text-white mt-2 -ml-32 w-64 rounded-xl py-2 z-40 flex-wrap overflow-auto absolute" onClick={() => openPopup(itemComponent.id)}>
                             Nutrition
                         </button>
+                        }
                         <button 
                             key={index} 
                             className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
@@ -212,7 +214,7 @@ export default function MenuChoices({ menuItemSelection, itemComponents, view, o
                                         <td className="text-right pr-2">{itemComponent.protein}g</td>
                                     </tr>
                                 </table>
-                                <button className="text-sm bg-black text-white mx-1 w-72 rounded-md" onClick={closePopup}>
+                                <button className="nutrition-close-button mt-2 text-sm bg-black text-white mx-1 w-72 rounded-md" onClick={closePopup}>
                                     close
                                 </button>
                             </div>

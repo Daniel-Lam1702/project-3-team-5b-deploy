@@ -34,7 +34,7 @@ import Cart from './Cart';
  * @component
  * @returns {JSX.Element} The MenuPage component.
  */
-function MenuPage({ cartItems, setCartItems }) {
+function MenuPage({ cartItems, setCartItems, isCustomer }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState({});
   const [view, setView] = useState("");
   const [isPopupVisible, setPopupVisible] = useState(false);
@@ -132,7 +132,7 @@ function MenuPage({ cartItems, setCartItems }) {
 
   return (
     <div className="navbar-container">
-      <Navbar backLink={"/customer"}/>
+      {isCustomer && <Navbar backLink={"/customer"}/>}
       <div className="menu-page">
         <div className="menu-sidebar">
           <h2>Menu Items</h2>
@@ -151,9 +151,10 @@ function MenuPage({ cartItems, setCartItems }) {
         </div>
 
         <div className="menu-main-content">
-          {view === "cart" && <Cart isPage={false} cartItems={cartItems} setCartItems={setCartItems} onContinue={onCheckout} clearCart={clearCart} />}
+          {view === "cart" && <Cart isCustomer={isCustomer} isPage={false} cartItems={cartItems} setCartItems={setCartItems} onContinue={onCheckout} clearCart={clearCart} />}
           {view !== "cart" &&             
           <MenuChoices
+              isCustomer={isCustomer}
               onContinue={onContinue}
               view={view}
               menuItemSelection={selectedMenuItem}

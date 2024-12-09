@@ -41,7 +41,7 @@ function CustomerHome() {
             <AccessibilityButton/>
           </li>
           <li>
-            <button onClick={() => navigate(-1)} className="back-button-cart">
+            <button onClick={() => navigate('/')} className="back-button-cart">
               Back
             </button>
           </li>

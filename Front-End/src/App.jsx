@@ -8,7 +8,6 @@ import CashierHome from './pages/Cashier/CashierHome';
 import Employee from './pages/Manager/Employee';
 import './App.css';
 import Cart from './pages/Customer/Cart';
-import CashierMenuPage from './pages/Cashier/CashierOrderPage';
 import ManageStuff from './pages/Manager/ManageStuff';
 import Sales from './pages/Manager/Sales';
 import Inventory from './pages/Manager/Inventory';
@@ -16,7 +15,7 @@ import { ManagerMenuHome } from './pages/Manager/menu/ManagerMenuHome';
 import { ManagerMenuItems } from './pages/Manager/menu/ManagerMenuItems';
 import InventoryManager from './pages/Manager/InventoryManager';
 import ManagerMenuChoices from './pages/Manager/menu/ManagerMenuChoices';
-import Checkout from './pages/Customer/Checkout';
+import CashierOrderPage from './pages/Cashier/CashierOrderPage';
 
 /**
  * Main application content component.
@@ -69,6 +68,7 @@ function AppContent() {
           path="/menu" 
           element={
             <MenuPage 
+              isCustomer={true}
               cartItems={cartItems} 
               setCartItems={setCartItems} // Pass addToCart function
             />
@@ -87,7 +87,7 @@ function AppContent() {
             />
           }
         />
-        <Route path="/cashier-order-page" element={<CashierMenuPage showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
+        <Route path="/cashier-order-page" element={<CashierOrderPage cartItems={cartItems} setCartItems={setCartItems} showSidebar={showSidebar} setShowSidebar={setShowSidebar} />} />
         <Route path='/manage-stuff/menu/menu-items' element={<ManagerMenuItems />} />
         <Route path='/manage-stuff/menu/menu-choices' element={<ManagerMenuChoices />} />
         <Route path='/manage-stuff/menu' element={<ManagerMenuHome />} />

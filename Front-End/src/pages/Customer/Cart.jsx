@@ -37,7 +37,7 @@ import { AccessibilityButton } from '../../components/Accessibility/Accessibilit
  *
  * @returns {JSX.Element} The Cart component.
  */
-const Cart = ({ isPage, cartItems, setCartItems, clearCart }) => {
+const Cart = ({ isCustomer, isPage, cartItems, setCartItems, clearCart }) => {
 
   const baseUrl = window.location.hostname === 'localhost'
   ? 'http://localhost:5000'
@@ -65,7 +65,7 @@ const Cart = ({ isPage, cartItems, setCartItems, clearCart }) => {
       if (response.ok) {
         alert('Order successfully completed');
         setCartItems([]);
-        navigate('/customer'); // Navigate to the customer page
+        isCustomer ? navigate('/customer') : navigate('/cashier'); // Navigate to the customer page
       } else {
         throw new Error('Failed to process order');
       }
