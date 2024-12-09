@@ -4,9 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS='--max_old_space_size=500' vite --host",
-    "build": "cross-env NODE_OPTIONS='--max_old_space_size=500' vite build",
-    "serve": "cross-env NODE_OPTIONS='--max_old_space_size=500' vite preview",
+    "dev": "vite --host",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -29,7 +28,6 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
-    "cross-env": "^7.0.3",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.1",
     "eslint-plugin-react-hooks": "^5.0.0",
