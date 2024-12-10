@@ -1,0 +1,107 @@
+.employee {
+  font-family: Arial, sans-serif;
+  background-color: #F4F4F4;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+.employee h1 {
+  text-align: center;
+  color: #D71F28;
+  margin-bottom: 20px;
+}
+
+.employee h2 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Table Styles */
+.employee table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #FFF;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.employee thead {
+  background-color: #D71F28;
+  color: #FFF;
+}
+
+.employee thead th {
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.employee tbody td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #EEE;
+}
+
+.employee tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Button Styles */
+.employee button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.employee button:hover {
+  opacity: 0.9;
+}
+
+.employee button:active {
+  transform: scale(0.98);
+}
+
+.employee button.edit {
+  background-color: #FFD700;
+  color: #333;
+  margin-right: 5px;
+}
+
+.employee button.delete {
+  background-color: #D71F28;
+  color: #FFF;
+}
+
+/* Form Styles */
+.employee form {
+  display: grid;
+  gap: 15px;
+  background-color: #FFF;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.employee label {
+  font-size: 16px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.employee input {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #CCC;
+}
+
+.employee button.submit {
+  background-color: #D71F28;
+  color: #FFF;
+  font-size: 16px;
+}

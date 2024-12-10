@@ -1,0 +1,106 @@
+/* InventoryManager - Block Level */
+.inventory-manager {
+    padding: 20px;
+    background-color: #f8f8f8;
+}
+
+/* Add Item Section */
+.inventory-manager__add-item-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* Inventory Table */
+.inventory-manager__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inventory-manager__table th,
+.inventory-manager__table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.inventory-manager__table th {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    text-align: left;
+    padding: 10px;
+}
+
+.inventory-manager__table th:hover {
+    background-color: #f0f0f0;
+}
+
+.inventory-manager__table th[data-sorted='asc']::after {
+    content: '↑';
+    margin-left: 5px;
+}
+
+.inventory-manager__table th[data-sorted='desc']::after {
+    content: '↓';
+    margin-left: 5px;
+}
+
+.inventory-manager__table td {
+    background-color: #f9f9f9;
+}
+
+.inventory-manager__table td button {
+    background-color: #f44336;
+    border-radius: 4px;
+    padding: 6px 10px;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.inventory-manager__table td button:hover {
+    background-color: #d32f2f;
+}
+
+/* Edit Item Form */
+.inventory-manager__edit-item-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+.inventory-manager__edit-item-form input {
+    margin-bottom: 10px;
+}
+
+.inventory-manager__edit-item-form button {
+    margin-right: 10px;
+}
+
+/* Back Button */
+.inventory-manager__back-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: absolute;
+    top: 5px;
+    left: 20px;
+}
+
+.inventory-manager__back-button:hover {
+    background-color: #45a049;
+}
