@@ -8,4 +8,10 @@ export default defineConfig({
     port: process.env.PORT || 5173,
     host: true,
   },
+  build: {
+    target: 'esnext',
+    sourcemap: false,
+    chunkSizeWarningLimit: 1000,
+    cssCodeSplit: true,
+  },
 })

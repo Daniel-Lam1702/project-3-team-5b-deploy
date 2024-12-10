@@ -5,7 +5,7 @@
     background-color: rgba(143, 125, 125, 0.811);
     left: 0;
     top: 0;
-    overflow-y: auto; /* Allow scrolling if content exceeds viewport height */
+    z-index: 20;
 }
 .accessibility-panel ul {
     align-items: center;

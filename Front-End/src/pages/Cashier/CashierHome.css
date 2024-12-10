@@ -1,10 +1,10 @@
 
-.start-order-button h1 {
+.cashier-start-order-button h1 {
     font-size: 4rem;
     font-weight: 500;
 }
 
-.start-order-button .shopping-cart {
+.cashier-start-order-button .shopping-cart {
     font-size: 200px;
 }
 
@@ -20,14 +20,18 @@
     font-size: 70px;
 }
 
+.cashier-start-order-button{
+    background-color: black;
+    color: white;
+}
 
 @media screen and (min-width: 1300px) {
-    .start-order-button h1 {
+    .cashier-start-order-button h1 {
         font-size: 7rem;
         font-weight: 700;
     }
 
-    .start-order-button .shopping-cart {
+    .cashier-start-order-button .shopping-cart {
         font-size: 250px;
     }
 
