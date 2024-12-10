@@ -87,7 +87,7 @@ function ManageStuff() {
       </button>
       <button className="manage-button" onClick={() => navigate('/order-history')}>
         Order History
-      </button/>
+      </button>
       <button className="manage-button" onClick={() => navigate('/manage-stuff/employee')}>
         Employees
       </button>
