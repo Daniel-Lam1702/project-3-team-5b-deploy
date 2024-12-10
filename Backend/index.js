@@ -152,10 +152,7 @@ app.put('/api/menu-items/:id', async (req, res) => {
     }
 });
 
-app.get('/api/order-history', async (req, res) => {
-/**
- * @description Get the order history.
- */
+
 app.get('/api/order-history', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM orders');
