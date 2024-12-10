@@ -59,7 +59,7 @@ function Login() {
 
     var params = {
       'client_id': '296008456961-qhf5m6rddmlddcp4fscadh9seos56jus.apps.googleusercontent.com',
-      'redirect_uri': 'https://main.ddks64gk1t7cw.amplifyapp.com/manager',
+      'redirect_uri': 'https://main.ddks64gk1t7cw.amplifyapp.com/manage-stuff',
       'response_type': 'token',
       'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly',
       'include_granted_scopes': 'true',
