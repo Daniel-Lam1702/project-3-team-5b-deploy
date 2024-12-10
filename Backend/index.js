@@ -57,10 +57,46 @@ app.get('/api/item-components', async (req, res) => {
     }
 });
 
-app.get('/my-api/order-history', async (req, res) => {
+app.get('/api/order-history', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM orders');
         res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/menu-item-instance', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM menu_item_instance');
+        res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/menu-item/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await pool.query('SELECT name FROM menu_item WHERE id = $1', [id]);
+        res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/cashier-name/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const result = await pool.query('SELECT name FROM cashier WHERE id = $1', [userId]);
+            //WHERE id = ?', [userId]);
+        res.json(result.rows);     
     }
     catch(error) {
         console.error('Database query error:', error);
