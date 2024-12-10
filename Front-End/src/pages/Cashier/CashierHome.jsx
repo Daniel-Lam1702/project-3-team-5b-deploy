@@ -60,6 +60,9 @@ function CashierHome() {
       <div className='flex justify-center items-center '>
         <ul className='grid grid-cols-1 gap-10'>
             <li>
+              <LandingPageButton label='Order History' onClick={navigate('/order-history')}/>
+            </li>
+            <li>
               <LandingPageButton label='Sign Out' onClick={() => {navigate('/')}} />
             </li>
           </ul>

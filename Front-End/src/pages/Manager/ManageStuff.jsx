@@ -85,6 +85,9 @@ function ManageStuff() {
       <button className="manage-button" onClick={() => navigate('/sales')}>
         Sales
       </button>
+      <button className="manage-button" onClick={() => navigate('/order-history')}>
+        Order History
+      </button/>
       <button className="manage-button" onClick={() => navigate('/manage-stuff/employee')}>
         Employees
       </button>
