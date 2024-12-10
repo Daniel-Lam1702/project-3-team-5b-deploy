@@ -154,7 +154,7 @@ app.put('/api/menu-items/:id', async (req, res) => {
 /**
  * @description Get the order history.
  */
-app.get('/my-api/order-history', async (req, res) => {
+app.get('/api/order-history', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM orders');
         res.json(result.rows);
