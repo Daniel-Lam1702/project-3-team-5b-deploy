@@ -90,9 +90,8 @@ const MenuBoard = () => {
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <div>
-                <h3>{item.name}</h3>
-                <p>{item.description}</p>
-                <p>Starting from ${item.base_price}</p>
+                <h3 className="left">{item.name}</h3>
+                <p className="justify">{item.description} starting from ${item.base_price}</p>
               </div>
             </div>
           ))}
@@ -104,10 +103,8 @@ const MenuBoard = () => {
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <div>
-                <h3>{item.name}</h3>
-                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? (
-                  <p>Premium Extra Cost: ${item.extra_cost}</p>
-                ) : null}
+                <h3 className="left">{item.name}</h3>
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p className="left">Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
@@ -118,10 +115,8 @@ const MenuBoard = () => {
           {sides.map((item, index) => (
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
-              <h3>{item.name}</h3>
-              {item.extra_cost && parseFloat(item.extra_cost) > 0 ? (
-                <p>Premium Extra Cost: ${item.extra_cost}</p>
-              ) : null}
+              <h3 className="left">{item.name}</h3>
+              {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p className="left">Premium Extra Cost: ${item.extra_cost}</p> : null}
             </div>
           ))}
         </div>
@@ -132,10 +127,8 @@ const MenuBoard = () => {
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <div>
-                <h3>{item.name}</h3>
-                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? (
-                  <p>Premium Extra Cost: ${item.extra_cost}</p>
-                ) : null}
+                <h3 className="left">{item.name}</h3>
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p className="left">Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
@@ -144,10 +137,8 @@ const MenuBoard = () => {
             <div key={index} className="item">
               <img src={item.image} alt={item.name} />
               <div>
-                <h3>{item.name}</h3>
-                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? (
-                  <p>Premium Extra Cost: ${item.extra_cost}</p>
-                ) : null}
+                <h3 className="left">{item.name}</h3>
+                {item.extra_cost && parseFloat(item.extra_cost) > 0 ? <p className="left">Premium Extra Cost: ${item.extra_cost}</p> : null}
               </div>
             </div>
           ))}
