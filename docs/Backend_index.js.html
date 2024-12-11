@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Backend/index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Backend/index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @fileoverview Backend server for handling API requests and routing.
+ * Includes middleware setup, API endpoints, and database operations.
+ */
+
+require('dotenv').config(); // Load environment variables from .env file
+const express = require('express'); // Import Express
+const cors = require('cors'); // Import CORS middleware
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middleware setup
+const allowedOrigins = [
+    'https://main.ddks64gk1t7cw.amplifyapp.com',
+    'http://localhost:5173'
+];
+
+const itemComponentsRoutes = require('./my-api/itemComponents');
+const inventoryRoutes = require('./my-api/inventory');
+const salesRoutes = require('./my-api/sales');
+const orderRoutes = require('./my-api/order');
+
+/**
+ * @description Middleware to enable Cross-Origin Resource Sharing (CORS).
+ */
+app.use(cors({
+    origin: (origin, callback) => {
+        if (allowedOrigins.includes(origin) || !origin) {
+            callback(null, true); // Allow the request
+        } else {
+            callback(new Error('Not allowed by CORS')); // Block the request
+        }
+    }
+}));
+
+/**
+ * @description Middleware to parse incoming JSON payloads.
+ */
+app.use(express.json()); // Parse JSON payloads
+
+// Import database connection
+const pool = require('./config/db');
+
+/**
+ * @description Retrieve all employees from the "cashier" table.
+ */
+app.get('/api/employees', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM cashier');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+/**
+ * @description Update an employee's details by ID.
+ * @param {string} id - Employee ID from the URL.
+ */
+app.put('/api/employees/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, hours_worked, password, manager_id } = req.body;
+        const result = await pool.query(
+            'UPDATE cashier SET name = $1, hours_worked = $2, password = $3, manager_id = $4 WHERE id = $5 RETURNING *',
+            [name, hours_worked, password, manager_id, id]
+        );
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error in PUT /api/employees/:id:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+/**
+ * @description Add a new employee to the "cashier" table.
+ */
+app.post('/api/employees', async (req, res) => {
+    try {
+        const { name, hours_worked, password, manager_id } = req.body;
+        const result = await pool.query(
+            'INSERT INTO cashier (name, hours_worked, password, manager_id) VALUES ($1, $2, $3, $4) RETURNING *',
+            [name, hours_worked, password, manager_id]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error adding employee:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+/**
+ * @description Delete an employee by ID.
+ */
+app.delete('/api/employees/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('DELETE FROM cashier WHERE id = $1 RETURNING *', [id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Employee not found' });
+        }
+        res.json({ message: 'Employee deleted successfully', deletedEmployee: result.rows[0] });
+    } catch (error) {
+        console.error('Error in DELETE /api/employees/:id:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+
+/**
+ * @description Retrieve all menu items.
+ */
+app.get('/api/menu-items', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM menu_item ORDER BY id;');
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+/**
+ * @description Update a menu item's details by ID.
+ */
+app.put('/api/menu-items/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, base_price, description, image, maxentrees, maxsides, hasdrink } = req.body;
+
+        const result = await pool.query(
+            `UPDATE menu_item 
+             SET name = $1, base_price = $2, description = $3, image = $4, maxentrees = $5, maxsides = $6, hasdrink = $7 
+             WHERE id = $8 RETURNING *`,
+            [name, base_price, description, image, maxentrees, maxsides, hasdrink, id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Menu item not found' });
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error('Error in PUT /api/menu-items/:id:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+app.get('/api/order-history', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM orders');
+        res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/menu-item-instance', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM menu_item_instance');
+        res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/menu-item/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+        const result = await pool.query('SELECT name FROM menu_item WHERE id = $1', [id]);
+        res.json(result.rows);
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/api/cashier-name/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const result = await pool.query('SELECT name FROM cashier WHERE id = $1', [userId]);
+            //WHERE id = ?', [userId]);
+        res.json(result.rows);     
+    }
+    catch(error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error');
+    }
+});
+/**
+ * @description Delete a menu item by ID.
+ */
+app.delete('/api/menu-items/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const result = await pool.query('DELETE FROM menu_item WHERE id = $1 RETURNING *', [id]);
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Menu item not found' });
+        }
+
+        res.json({
+            message: 'Menu item deleted successfully',
+            deletedItem: result.rows[0]
+        });
+    } catch (error) {
+        console.error('Error in DELETE /api/menu-items/:id:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+/**
+ * @description Add a new menu item.
+ */
+app.post('/api/menu-items', async (req, res) => {
+    try {
+        const { name, base_price, description, image, maxentrees, maxsides, hasdrink } = req.body;
+
+        const result = await pool.query(
+            `INSERT INTO menu_item (name, base_price, description, image, maxentrees, maxsides, hasdrink) 
+             VALUES ($1, $2, $3, $4, $5, $6, $7) 
+             RETURNING *`,
+            [name, base_price, description, image, maxentrees, maxsides, hasdrink]
+        );
+
+        res.status(201).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error in POST /api/menu-items:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+/**
+ * @description Route handlers for inventory and item components.
+ */
+app.use('/api/inventory', inventoryRoutes);
+
+app.use('/api/item-components', itemComponentsRoutes);
+
+
+/**
+ * @description Route handlers for sales.
+ */
+app.use('/api/sales', salesRoutes);
+
+/**
+ * @description Route handler for orders
+ */
+app.use('/api/orders', orderRoutes);
+
+/**
+ * @description Delete an image from Cloudinary.
+ */
+// Image deletion
+
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+    secure: true,
+});
+
+app.post('/api/delete-image', async (req, res) => {
+    const { public_id } = req.body;
+
+    try {
+        const result = await cloudinary.uploader.destroy(public_id);
+        res.status(200).json({ success: true, result });
+    } catch (error) {
+        console.error("Error deleting image:", error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+/**
+ * @description Start the server.
+ */
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Chart.helpers.html">helpers</a></li><li><a href="Chart.helpers.easing.effects.html">effects</a></li><li><a href="Chart.helpers.math.html">math</a></li></ul><h3>Classes</h3><ul><li><a href="Axios.html">Axios</a></li><li><a href="Axios$1.html">Axios$1</a></li><li><a href="CancelToken.html">CancelToken</a></li><li><a href="CancelToken$1.html">CancelToken$1</a></li><li><a href="FormData.html">FormData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#AxiosError">AxiosError</a></li><li><a href="global.html#AxiosError$1">AxiosError$1</a></li><li><a href="global.html#AxiosURLSearchParams">AxiosURLSearchParams</a></li><li><a href="global.html#CanceledError">CanceledError</a></li><li><a href="global.html#CanceledError$1">CanceledError$1</a></li><li><a href="global.html#Cart">Cart</a></li><li><a href="global.html#CartItem">CartItem</a></li><li><a href="global.html#CashierHome">CashierHome</a></li><li><a href="global.html#CashierNavbar">CashierNavbar</a></li><li><a href="global.html#CashierOrderPage">CashierOrderPage</a></li><li><a href="global.html#Checkout">Checkout</a></li><li><a href="global.html#CustomerHome">CustomerHome</a></li><li><a href="global.html#Employee">Employee</a></li><li><a href="global.html#EntreeChoices">EntreeChoices</a></li><li><a href="global.html#FIELD_NAME_REGEXP">FIELD_NAME_REGEXP</a></li><li><a href="global.html#Inventory">Inventory</a></li><li><a href="global.html#InventoryManager">InventoryManager</a></li><li><a href="global.html#InventoryReport">InventoryReport</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#ManageStuff">ManageStuff</a></li><li><a href="global.html#ManagerMenuHome">ManagerMenuHome</a></li><li><a href="global.html#ManagerMenuItems">ManagerMenuItems</a></li><li><a href="global.html#MenuBoard">MenuBoard</a></li><li><a href="global.html#MenuItem">MenuItem</a></li><li><a href="global.html#MenuItemEditForm">MenuItemEditForm</a></li><li><a href="global.html#MenuPage">MenuPage</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#ReadableAsyncKit">ReadableAsyncKit</a></li><li><a href="global.html#ReadableParallel">ReadableParallel</a></li><li><a href="global.html#ReadableSerial">ReadableSerial</a></li><li><a href="global.html#ReadableSerialOrdered">ReadableSerialOrdered</a></li><li><a href="global.html#Sales">Sales</a></li><li><a href="global.html#SalesReport">SalesReport</a></li><li><a href="global.html#SideChoices">SideChoices</a></li><li><a href="global.html#Weather">Weather</a></li><li><a href="global.html#_arrayUnique">_arrayUnique</a></li><li><a href="global.html#_filterBetween">_filterBetween</a></li><li><a href="global.html#abort">abort</a></li><li><a href="global.html#addRoundedRectPath">addRoundedRectPath</a></li><li><a href="global.html#append">append</a></li><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#ascending">ascending</a></li><li><a href="global.html#assertOptions">assertOptions</a></li><li><a href="global.html#async">async</a></li><li><a href="global.html#buildFullPath">buildFullPath</a></li><li><a href="global.html#buildURL">buildURL</a></li><li><a href="global.html#callback">callback</a></li><li><a href="global.html#capitalizeWords">capitalizeWords</a></li><li><a href="global.html#charset">charset</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#clone">clone</a></li><li><a href="global.html#cloudinary">cloudinary</a></li><li><a href="global.html#combineURLs">combineURLs</a></li><li><a href="global.html#contentType">contentType</a></li><li><a href="global.html#createInstance">createInstance</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#defer">defer</a></li><li><a href="global.html#deleteProperty">deleteProperty</a></li><li><a href="global.html#descending">descending</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#dispatchBeforeRedirect">dispatchBeforeRedirect</a></li><li><a href="global.html#dispatchRequest">dispatchRequest</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#encode$1">encode$1</a></li><li><a href="global.html#endsWith">endsWith</a></li><li><a href="global.html#extend">extend</a></li><li><a href="global.html#extension">extension</a></li><li><a href="global.html#finisher">finisher</a></li><li><a href="global.html#finiteOrDefault">finiteOrDefault</a></li><li><a href="global.html#forEach">forEach</a></li><li><a href="global.html#forEachEntry">forEachEntry</a></li><li><a href="global.html#formDataToJSON">formDataToJSON</a></li><li><a href="global.html#freezeMethods">freezeMethods</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getCanvasPosition">getCanvasPosition</a></li><li><a href="global.html#getDatasetAtEvent">getDatasetAtEvent</a></li><li><a href="global.html#getElementAtEvent">getElementAtEvent</a></li><li><a href="global.html#getElementsAtEvent">getElementsAtEvent</a></li><li><a href="global.html#getOwnPropertyDescriptor">getOwnPropertyDescriptor</a></li><li><a href="global.html#getPrototypeOf">getPrototypeOf</a></li><li><a href="global.html#getProxyForUrl">getProxyForUrl</a></li><li><a href="global.html#getRelativePosition">getRelativePosition</a></li><li><a href="global.html#has">has</a></li><li><a href="global.html#hasStandardBrowserEnv">hasStandardBrowserEnv</a></li><li><a href="global.html#hasStandardBrowserWebWorkerEnv">hasStandardBrowserWebWorkerEnv</a></li><li><a href="global.html#inherits">inherits</a></li><li><a href="global.html#isAbsoluteURL">isAbsoluteURL</a></li><li><a href="global.html#isArray">isArray</a></li><li><a href="global.html#isArrayBuffer">isArrayBuffer</a></li><li><a href="global.html#isArrayBufferView">isArrayBufferView</a></li><li><a href="global.html#isAxiosError$1">isAxiosError$1</a></li><li><a href="global.html#isBlob">isBlob</a></li><li><a href="global.html#isBoolean">isBoolean</a></li><li><a href="global.html#isBuffer">isBuffer</a></li><li><a href="global.html#isDate">isDate</a></li><li><a href="global.html#isFile">isFile</a></li><li><a href="global.html#isFileList">isFileList</a></li><li><a href="global.html#isFlatArray">isFlatArray</a></li><li><a href="global.html#isFormData">isFormData</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isNullOrUndef">isNullOrUndef</a></li><li><a href="global.html#isNumber">isNumber</a></li><li><a href="global.html#isNumberFinite">isNumberFinite</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#isPlainObject">isPlainObject</a></li><li><a href="global.html#isRegExp">isRegExp</a></li><li><a href="global.html#isSpecCompliantForm">isSpecCompliantForm</a></li><li><a href="global.html#isStream">isStream</a></li><li><a href="global.html#isString">isString</a></li><li><a href="global.html#isTypedArray">isTypedArray</a></li><li><a href="global.html#isURLSearchParams">isURLSearchParams</a></li><li><a href="global.html#isUndefined">isUndefined</a></li><li><a href="global.html#isVisitable">isVisitable</a></li><li><a href="global.html#iterate">iterate</a></li><li><a href="global.html#lookup">lookup</a></li><li><a href="global.html#matchAll">matchAll</a></li><li><a href="global.html#merge">merge</a></li><li><a href="global.html#mergeConfig$1">mergeConfig$1</a></li><li><a href="global.html#monotoneAdjust">monotoneAdjust</a></li><li><a href="global.html#niceNum">niceNum</a></li><li><a href="global.html#noop">noop</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#parallel">parallel</a></li><li><a href="global.html#parseBorderRadius$1">parseBorderRadius$1</a></li><li><a href="global.html#parseHeaders">parseHeaders</a></li><li><a href="global.html#parsePropPath">parsePropPath</a></li><li><a href="global.html#pathArc">pathArc</a></li><li><a href="global.html#rThetaToXY">rThetaToXY</a></li><li><a href="global.html#readUsedSize">readUsedSize</a></li><li><a href="global.html#removeBrackets">removeBrackets</a></li><li><a href="global.html#renderKey">renderKey</a></li><li><a href="global.html#renderText">renderText</a></li><li><a href="global.html#requestAnimFrame">requestAnimFrame</a></li><li><a href="global.html#resolve">resolve</a></li><li><a href="global.html#retinaScale">retinaScale</a></li><li><a href="global.html#runJob">runJob</a></li><li><a href="global.html#serial">serial</a></li><li><a href="global.html#serialOrdered">serialOrdered</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setProxy">setProxy</a></li><li><a href="global.html#settle">settle</a></li><li><a href="global.html#speedometer">speedometer</a></li><li><a href="global.html#splineCurveMonotone">splineCurveMonotone</a></li><li><a href="global.html#spread$1">spread$1</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#streamer">streamer</a></li><li><a href="global.html#stringifySafely">stringifySafely</a></li><li><a href="global.html#stripBOM">stripBOM</a></li><li><a href="global.html#terminator">terminator</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#throttled">throttled</a></li><li><a href="global.html#throwIfCancellationRequested">throwIfCancellationRequested</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toFlatObject">toFlatObject</a></li><li><a href="global.html#toFormData">toFormData</a></li><li><a href="global.html#toFormData$1">toFormData$1</a></li><li><a href="global.html#toLineHeight">toLineHeight</a></li><li><a href="global.html#toPadding">toPadding</a></li><li><a href="global.html#toTRBL">toTRBL</a></li><li><a href="global.html#toTRBLCorners">toTRBLCorners</a></li><li><a href="global.html#transformData">transformData</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#uid">uid</a></li><li><a href="global.html#useFetchData">useFetchData</a></li><li><a href="global.html#valueOrDefault">valueOrDefault</a></li><li><a href="global.html#vary">vary</a></li><li><a href="global.html#wrapCallback">wrapCallback</a></li><li><a href="global.html#wrapIterator">wrapIterator</a></li><li><a href="global.html#wrapIteratorCallback">wrapIteratorCallback</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 10 2024 19:10:15 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

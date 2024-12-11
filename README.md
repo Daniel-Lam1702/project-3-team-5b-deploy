@@ -49,3 +49,12 @@ The `ScrumFiles` folder reflects the development and flow of the project during 
 Explore this folder for a comprehensive view of the project's progression.
 
 ---
+
+### 5. docs 
+The `docs` folder contains our low level code documentation fr each of our files and reflects our features!
+- **Contents and Hosting**:  
+  - **Documentaiton**: Our documentation is hosted here using GitHub pages as a way to easily display our documentation!
+
+Explore this folder for a comprehensive view of the project's functionality.
+
+---

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Front-End/src/components/MenuPage/MenuChoices.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Front-End/src/components/MenuPage/MenuChoices.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect, useState } from "react";
+import PropTypes, { object } from 'prop-types';
+import './MenuChoices.css';
+
+/**
+ * Component for displaying and managing menu item selections.
+ * @param {Object} props - The props for the component.
+ * @param {Object} props.menuItemSelection - The current menu item being selected, containing details like maximum sides or entrees allowed.
+ * @param {Map} props.itemComponents - A map of item categories to their respective components for display.
+ * @param {string} props.view - The current view or type of item being selected (e.g., "side", "entrees", "drink").
+ * @param {function} props.onContinue - Callback function triggered when the continue button is clicked.
+ * @returns {JSX.Element} The MenuChoices component.
+ */
+export default function MenuChoices({ isCustomer, menuItemSelection, itemComponents, view, onContinue}) {
+    /** @type {Array} State to manage the selected menu choices */
+    const [selectedMenuChoices, setSelectedMenuChoices] = useState([]);
+    /** @type {string} State to manage the label of the action button */
+    const [buttonLabel, setButtonLabel] = useState("");
+    /** @type {number} State to manage the maximum number of choices allowed */
+    const [maxChoices, setMaxChoices] = useState(1);
+    /** @type {string} State to manage the title displayed for the selection view */
+    const [title, setTitle] = useState("");
+    /** @type {Array} State to manage the list of item components to display */
+    const [displayItemComponents, setDisplayItemComponents] = useState([]);
+    const [isSelected, setIsSelected] = useState(true);
+    const [popupOpen, setPopupOpen] = useState(false);
+    const [nutritionIndex, setNutritionIndex] = useState(-1);
+
+    const showAllergens = (itemComponent) => {
+        if(itemComponent.allergens.length > 0)
+        {
+            let allergenMessage = "This item contains the following allergens: ";
+            for(let i = 0; i &lt; itemComponent.allergens.length; i++)
+            {
+                if(itemComponent.allergens[i] == "")
+                    return;
+                if(i == itemComponent.allergens.length - 1 &amp;&amp; itemComponent.allergens.length > 1)
+                    allergenMessage += " and ";
+                allergenMessage += itemComponent.allergens[i];
+                if(i != itemComponent.allergens.length - 1 &amp;&amp; i != itemComponent.allergens.length - 2)
+                    allergenMessage += ", ";
+            }
+            alert(allergenMessage);
+        }
+    };
+
+    const openPopup = (index) => {
+        setNutritionIndex(index);
+        setPopupOpen(true);
+    }
+
+    const closePopup = () => {
+        setPopupOpen(false);
+        setNutritionIndex(-1);
+    }
+    /**
+     * useEffect hook to set max number of choices, title, and displayed items based on the current view.
+     */
+    useEffect(() => {
+        if (!menuItemSelection || Object.keys(menuItemSelection).length === 0){
+            return;
+        }
+
+        let updatedMaxChoices;
+
+        if (view === "drink" || view === "appetizer" || view === "A La Carte") {
+            updatedMaxChoices = 1;
+        } else if (view === "side") {
+            updatedMaxChoices = menuItemSelection.menuItem.maxsides;
+        } else {
+            updatedMaxChoices = menuItemSelection.menuItem.maxentrees;
+        }
+        setMaxChoices(updatedMaxChoices);
+
+        if (view === "A La Carte"){
+            setDisplayItemComponents([...itemComponents.get("side"), ...itemComponents.get("entrees")]);
+            setTitle(`Select ${updatedMaxChoices} Side or Entree`);
+        } else{
+            setDisplayItemComponents(itemComponents.get(view));
+            setTitle(`Select ${updatedMaxChoices} ${view.charAt(0).toUpperCase() + view.slice(1)}`);
+        }
+        setSelectedMenuChoices([])
+    }, [itemComponents, view, menuItemSelection, setMaxChoices]);
+
+    /**
+     * useEffect hook to set the button label based on the current view and menu item selection.
+     */
+    useEffect(() => {
+        if (view === "A La Carte" || view === "appetizer" || view === "drink" || (view === "entrees" &amp;&amp; menuItemSelection?.menuItem?.name !== "Panda Bundle")) {
+            setButtonLabel("Add Selection to Cart");
+        } else {
+            setButtonLabel("Continue");
+        }
+    }, [view, menuItemSelection]);
+
+    /**
+     * Toggles the selection of a menu choice.
+     * @param {Object} menuChoice - The menu choice to be toggled.
+     */
+    const toggleMenuChoice = (menuChoice) => {
+        if(isSelected &amp;&amp; isCustomer)
+            showAllergens(menuChoice);
+        setIsSelected(prevState => !prevState);
+        setSelectedMenuChoices((prevChoices) => {
+            if (prevChoices.includes(menuChoice)) {
+                return prevChoices.filter(choice => choice.name !== menuChoice.name);
+            } else if (prevChoices.length &lt; maxChoices) {
+                return [...prevChoices, menuChoice];
+            }
+            return prevChoices;
+        });
+    };
+
+    /**
+     * Handles the click event for the continue button.
+     */
+    const handleContinue = () => {
+        setIsSelected(true);
+        if (selectedMenuChoices.length > 0) {
+            onContinue(selectedMenuChoices);
+            setSelectedMenuChoices([]);
+        }
+    };
+
+    // Render fallback message if no menu item selection is available
+    if (!menuItemSelection || Object.keys(menuItemSelection).length === 0) {
+        return &lt;div className="font-bold text-2xl">Select Menu Item&lt;/div>;
+    }    
+
+    return (
+        &lt;div className="menu-choices">
+            &lt;h2>{title}&lt;/h2>
+            &lt;div className="choices">
+                {displayItemComponents?.map((itemComponent, index) => (
+                    &lt;div>
+                    &lt;div className="sticky">
+                        {isCustomer &amp;&amp; 
+                        &lt;button className="nutrition-button bg-black text-white mt-2 -ml-32 w-64 rounded-xl py-2 z-40 flex-wrap overflow-auto absolute" onClick={() => openPopup(itemComponent.id)}>
+                            Nutrition
+                        &lt;/button>
+                        }
+                        &lt;button 
+                            key={index} 
+                            className={`choice-item ${selectedMenuChoices.some(choice => choice.name === itemComponent.name) ? 'selected' : ''}`} 
+                            onClick={() => toggleMenuChoice(itemComponent)} 
+                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleMenuChoice(itemComponent); }}
+                            aria-pressed={selectedMenuChoices.some(choice => choice.name === itemComponent.name)}
+                            type="button"
+                        >
+                            &lt;img src={itemComponent.image} alt={`${itemComponent.name}`} className="menu-choice-image" />
+                            &lt;h3>{itemComponent.name}&lt;/h3>
+                        &lt;/button>
+                    &lt;/div>   
+                        {popupOpen &amp;&amp; nutritionIndex === itemComponent.id &amp;&amp; (
+                            &lt;div className="bg-white mt-2">
+                                &lt;h3 className="text-lg">&lt;b>{itemComponent.name} Nutrition&lt;/b>&lt;/h3>
+                                &lt;table className="w-full">
+                                    &lt;tr className="">
+                                        &lt;th className="text-left pl-2">Serving Size&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.serving_size}oz&lt;/td>
+                                    &lt;/tr>
+                                    &lt;tr className="outline outline-1">
+                                        &lt;th className="text-left pl-2">Calories&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.calories}cal&lt;/td>
+                                    &lt;/tr>
+                                    {itemComponent.fat_calories != null &amp;&amp; (
+                                        &lt;tr>
+                                            &lt;th className="text-left pl-2">Fat Calories&lt;/th>
+                                            &lt;td className="text-right pr-2">{itemComponent.fat_calories}cal&lt;/td>
+                                        &lt;/tr>
+                                    )}
+                                    &lt;tr className="outline outline-1">
+                                        &lt;th className="text-left pl-2">Total Fat&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.total_fat}g&lt;/td>
+                                    &lt;/tr>
+                                    &lt;tr>
+                                        &lt;th className="text-left pl-2">Saturated Fat&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.saturated_fat}g&lt;/td>
+                                    &lt;/tr>
+                                    &lt;tr className="outline outline-1">
+                                        &lt;th className="text-left pl-2">Trans Fat&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.trans_fat}g&lt;/td>
+                                    &lt;/tr>
+                                    {itemComponent.cholesterol != null &amp;&amp; (
+                                        &lt;tr>
+                                            &lt;th className="text-left pl-2">Cholesterol&lt;/th>
+                                            &lt;td className="text-right pr-2">{itemComponent.cholesterol}mg&lt;/td>
+                                        &lt;/tr>
+                                    )}
+                                    {itemComponent.sodium != null &amp;&amp; (
+                                        &lt;tr className="outline outline-1">
+                                            &lt;th className="text-left pl-2">Sodium&lt;/th>
+                                            &lt;td className="text-right pr-2">{itemComponent.sodium}mg&lt;/td>
+                                        &lt;/tr>
+                                    )}
+                                    &lt;tr>
+                                        &lt;th className="text-left pl-2">Carbohydrates&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.carbs}g&lt;/td>
+                                    &lt;/tr>
+                                    {itemComponent.fiber != null &amp;&amp; (
+                                        &lt;tr className="outline outline-1">
+                                            &lt;th className="text-left pl-2">Fiber&lt;/th>
+                                            &lt;td className="text-right pr-2">{itemComponent.fiber}g&lt;/td>
+                                        &lt;/tr>
+                                    )}
+                                    {itemComponent.sugar != null &amp;&amp; (
+                                        &lt;tr>
+                                            &lt;th className="text-left pl-2">Sugar&lt;/th>
+                                            &lt;td className="text-right pr-2">{itemComponent.sugar}g&lt;/td>
+                                        &lt;/tr>
+                                    )}
+                                    &lt;tr className="outline outline-1">
+                                        &lt;th className="text-left pl-2">Protein&lt;/th>
+                                        &lt;td className="text-right pr-2">{itemComponent.protein}g&lt;/td>
+                                    &lt;/tr>
+                                &lt;/table>
+                                &lt;button className="nutrition-close-button mt-2 text-sm bg-black text-white mx-1 w-72 rounded-md" onClick={closePopup}>
+                                    close
+                                &lt;/button>
+                            &lt;/div>
+                        )}
+                    &lt;/div>
+                ))}
+            &lt;/div>
+            &lt;button 
+                className={`continue-button ${selectedMenuChoices.length > 0 ? 'active' : 'disabled'}`} 
+                onClick={handleContinue} 
+                disabled={selectedMenuChoices.length &lt; maxChoices}
+            >
+                {buttonLabel}
+            &lt;/button>
+        &lt;/div>
+    );
+}
+
+MenuChoices.propTypes = {
+    menuItemSelection: PropTypes.object.isRequired,
+    itemComponents: PropTypes.instanceOf(Map).isRequired,
+    view: PropTypes.string.isRequired,
+    onContinue: PropTypes.func.isRequired
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="Chart.helpers.html">helpers</a></li><li><a href="Chart.helpers.easing.effects.html">effects</a></li><li><a href="Chart.helpers.math.html">math</a></li></ul><h3>Classes</h3><ul><li><a href="Axios.html">Axios</a></li><li><a href="Axios$1.html">Axios$1</a></li><li><a href="CancelToken.html">CancelToken</a></li><li><a href="CancelToken$1.html">CancelToken$1</a></li><li><a href="FormData.html">FormData</a></li></ul><h3>Global</h3><ul><li><a href="global.html#App">App</a></li><li><a href="global.html#AppContent">AppContent</a></li><li><a href="global.html#AxiosError">AxiosError</a></li><li><a href="global.html#AxiosError$1">AxiosError$1</a></li><li><a href="global.html#AxiosURLSearchParams">AxiosURLSearchParams</a></li><li><a href="global.html#CanceledError">CanceledError</a></li><li><a href="global.html#CanceledError$1">CanceledError$1</a></li><li><a href="global.html#Cart">Cart</a></li><li><a href="global.html#CartItem">CartItem</a></li><li><a href="global.html#CashierHome">CashierHome</a></li><li><a href="global.html#CashierNavbar">CashierNavbar</a></li><li><a href="global.html#CashierOrderPage">CashierOrderPage</a></li><li><a href="global.html#Checkout">Checkout</a></li><li><a href="global.html#CustomerHome">CustomerHome</a></li><li><a href="global.html#Employee">Employee</a></li><li><a href="global.html#EntreeChoices">EntreeChoices</a></li><li><a href="global.html#FIELD_NAME_REGEXP">FIELD_NAME_REGEXP</a></li><li><a href="global.html#Inventory">Inventory</a></li><li><a href="global.html#InventoryManager">InventoryManager</a></li><li><a href="global.html#InventoryReport">InventoryReport</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#ManageStuff">ManageStuff</a></li><li><a href="global.html#ManagerMenuHome">ManagerMenuHome</a></li><li><a href="global.html#ManagerMenuItems">ManagerMenuItems</a></li><li><a href="global.html#MenuBoard">MenuBoard</a></li><li><a href="global.html#MenuItem">MenuItem</a></li><li><a href="global.html#MenuItemEditForm">MenuItemEditForm</a></li><li><a href="global.html#MenuPage">MenuPage</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#ReadableAsyncKit">ReadableAsyncKit</a></li><li><a href="global.html#ReadableParallel">ReadableParallel</a></li><li><a href="global.html#ReadableSerial">ReadableSerial</a></li><li><a href="global.html#ReadableSerialOrdered">ReadableSerialOrdered</a></li><li><a href="global.html#Sales">Sales</a></li><li><a href="global.html#SalesReport">SalesReport</a></li><li><a href="global.html#SideChoices">SideChoices</a></li><li><a href="global.html#Weather">Weather</a></li><li><a href="global.html#_arrayUnique">_arrayUnique</a></li><li><a href="global.html#_filterBetween">_filterBetween</a></li><li><a href="global.html#abort">abort</a></li><li><a href="global.html#addRoundedRectPath">addRoundedRectPath</a></li><li><a href="global.html#append">append</a></li><li><a href="global.html#arrayToObject">arrayToObject</a></li><li><a href="global.html#ascending">ascending</a></li><li><a href="global.html#assertOptions">assertOptions</a></li><li><a href="global.html#async">async</a></li><li><a href="global.html#buildFullPath">buildFullPath</a></li><li><a href="global.html#buildURL">buildURL</a></li><li><a href="global.html#callback">callback</a></li><li><a href="global.html#capitalizeWords">capitalizeWords</a></li><li><a href="global.html#charset">charset</a></li><li><a href="global.html#clean">clean</a></li><li><a href="global.html#clearCanvas">clearCanvas</a></li><li><a href="global.html#clone">clone</a></li><li><a href="global.html#cloudinary">cloudinary</a></li><li><a href="global.html#combineURLs">combineURLs</a></li><li><a href="global.html#contentType">contentType</a></li><li><a href="global.html#createInstance">createInstance</a></li><li><a href="global.html#debounce">debounce</a></li><li><a href="global.html#defer">defer</a></li><li><a href="global.html#deleteProperty">deleteProperty</a></li><li><a href="global.html#descending">descending</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#dispatchBeforeRedirect">dispatchBeforeRedirect</a></li><li><a href="global.html#dispatchRequest">dispatchRequest</a></li><li><a href="global.html#encode">encode</a></li><li><a href="global.html#encode$1">encode$1</a></li><li><a href="global.html#endsWith">endsWith</a></li><li><a href="global.html#extend">extend</a></li><li><a href="global.html#extension">extension</a></li><li><a href="global.html#finisher">finisher</a></li><li><a href="global.html#finiteOrDefault">finiteOrDefault</a></li><li><a href="global.html#forEach">forEach</a></li><li><a href="global.html#forEachEntry">forEachEntry</a></li><li><a href="global.html#formDataToJSON">formDataToJSON</a></li><li><a href="global.html#freezeMethods">freezeMethods</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getCanvasPosition">getCanvasPosition</a></li><li><a href="global.html#getDatasetAtEvent">getDatasetAtEvent</a></li><li><a href="global.html#getElementAtEvent">getElementAtEvent</a></li><li><a href="global.html#getElementsAtEvent">getElementsAtEvent</a></li><li><a href="global.html#getOwnPropertyDescriptor">getOwnPropertyDescriptor</a></li><li><a href="global.html#getPrototypeOf">getPrototypeOf</a></li><li><a href="global.html#getProxyForUrl">getProxyForUrl</a></li><li><a href="global.html#getRelativePosition">getRelativePosition</a></li><li><a href="global.html#has">has</a></li><li><a href="global.html#hasStandardBrowserEnv">hasStandardBrowserEnv</a></li><li><a href="global.html#hasStandardBrowserWebWorkerEnv">hasStandardBrowserWebWorkerEnv</a></li><li><a href="global.html#inherits">inherits</a></li><li><a href="global.html#isAbsoluteURL">isAbsoluteURL</a></li><li><a href="global.html#isArray">isArray</a></li><li><a href="global.html#isArrayBuffer">isArrayBuffer</a></li><li><a href="global.html#isArrayBufferView">isArrayBufferView</a></li><li><a href="global.html#isAxiosError$1">isAxiosError$1</a></li><li><a href="global.html#isBlob">isBlob</a></li><li><a href="global.html#isBoolean">isBoolean</a></li><li><a href="global.html#isBuffer">isBuffer</a></li><li><a href="global.html#isDate">isDate</a></li><li><a href="global.html#isFile">isFile</a></li><li><a href="global.html#isFileList">isFileList</a></li><li><a href="global.html#isFlatArray">isFlatArray</a></li><li><a href="global.html#isFormData">isFormData</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isNullOrUndef">isNullOrUndef</a></li><li><a href="global.html#isNumber">isNumber</a></li><li><a href="global.html#isNumberFinite">isNumberFinite</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#isPlainObject">isPlainObject</a></li><li><a href="global.html#isRegExp">isRegExp</a></li><li><a href="global.html#isSpecCompliantForm">isSpecCompliantForm</a></li><li><a href="global.html#isStream">isStream</a></li><li><a href="global.html#isString">isString</a></li><li><a href="global.html#isTypedArray">isTypedArray</a></li><li><a href="global.html#isURLSearchParams">isURLSearchParams</a></li><li><a href="global.html#isUndefined">isUndefined</a></li><li><a href="global.html#isVisitable">isVisitable</a></li><li><a href="global.html#iterate">iterate</a></li><li><a href="global.html#lookup">lookup</a></li><li><a href="global.html#matchAll">matchAll</a></li><li><a href="global.html#merge">merge</a></li><li><a href="global.html#mergeConfig$1">mergeConfig$1</a></li><li><a href="global.html#monotoneAdjust">monotoneAdjust</a></li><li><a href="global.html#niceNum">niceNum</a></li><li><a href="global.html#noop">noop</a></li><li><a href="global.html#ownKeys">ownKeys</a></li><li><a href="global.html#parallel">parallel</a></li><li><a href="global.html#parseBorderRadius$1">parseBorderRadius$1</a></li><li><a href="global.html#parseHeaders">parseHeaders</a></li><li><a href="global.html#parsePropPath">parsePropPath</a></li><li><a href="global.html#pathArc">pathArc</a></li><li><a href="global.html#rThetaToXY">rThetaToXY</a></li><li><a href="global.html#readUsedSize">readUsedSize</a></li><li><a href="global.html#removeBrackets">removeBrackets</a></li><li><a href="global.html#renderKey">renderKey</a></li><li><a href="global.html#renderText">renderText</a></li><li><a href="global.html#requestAnimFrame">requestAnimFrame</a></li><li><a href="global.html#resolve">resolve</a></li><li><a href="global.html#retinaScale">retinaScale</a></li><li><a href="global.html#runJob">runJob</a></li><li><a href="global.html#serial">serial</a></li><li><a href="global.html#serialOrdered">serialOrdered</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#setProxy">setProxy</a></li><li><a href="global.html#settle">settle</a></li><li><a href="global.html#speedometer">speedometer</a></li><li><a href="global.html#splineCurveMonotone">splineCurveMonotone</a></li><li><a href="global.html#spread$1">spread$1</a></li><li><a href="global.html#state">state</a></li><li><a href="global.html#streamer">streamer</a></li><li><a href="global.html#stringifySafely">stringifySafely</a></li><li><a href="global.html#stripBOM">stripBOM</a></li><li><a href="global.html#terminator">terminator</a></li><li><a href="global.html#throttle">throttle</a></li><li><a href="global.html#throttled">throttled</a></li><li><a href="global.html#throwIfCancellationRequested">throwIfCancellationRequested</a></li><li><a href="global.html#toArray">toArray</a></li><li><a href="global.html#toFlatObject">toFlatObject</a></li><li><a href="global.html#toFormData">toFormData</a></li><li><a href="global.html#toFormData$1">toFormData$1</a></li><li><a href="global.html#toLineHeight">toLineHeight</a></li><li><a href="global.html#toPadding">toPadding</a></li><li><a href="global.html#toTRBL">toTRBL</a></li><li><a href="global.html#toTRBLCorners">toTRBLCorners</a></li><li><a href="global.html#transformData">transformData</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#uid">uid</a></li><li><a href="global.html#useFetchData">useFetchData</a></li><li><a href="global.html#valueOrDefault">valueOrDefault</a></li><li><a href="global.html#vary">vary</a></li><li><a href="global.html#wrapCallback">wrapCallback</a></li><li><a href="global.html#wrapIterator">wrapIterator</a></li><li><a href="global.html#wrapIteratorCallback">wrapIteratorCallback</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Dec 10 2024 19:10:15 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
