@@ -14,7 +14,7 @@ This folder contains the JavaScript code that powers the visual UI elements of t
   - **Cashier View**: Tools for cashiers to manage orders.  
   - **Manager View**: Interfaces for managerial oversight.  
   - **Authentication**: Pages that handle user login and security.  
-  - **Customer View**: Interaction points for customer engagement.  
+  - **Customer View**: Runs the customer views including order functionality and a menu board display.  
 
 Each section generally includes a **home page** with additional functionality tailored to its specific role.
 
