@@ -57,4 +57,6 @@ The `docs` folder contains our low level code documentation fr each of our files
 
 Explore this folder for a comprehensive view of the project's functionality.
 
+Take a look at `https://csce331-fall2024.github.io/project-3-team-5b/`
+
 ---
